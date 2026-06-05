@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Charan Lingamgunta Resume</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 10.5pt;
+            line-height: 1.3;
+            color: #111;
+            max-width: 8.5in;
+            margin: 0 auto;
+            padding: 0.55in 0.65in;
+        }
+
+        h1 {
+            font-size: 18pt;
+            text-align: center;
+            margin-bottom: 3px;
+            letter-spacing: 0.3px;
+        }
+
+        .headline {
+            text-align: center;
+            font-size: 10.5pt;
+            font-weight: bold;
+            text-transform: uppercase;
+            margin-bottom: 4px;
+        }
+
+        .contact {
+            text-align: center;
+            font-size: 10pt;
+            margin-bottom: 12px;
+        }
+
+        .contact a {
+            color: #111;
+            text-decoration: none;
+        }
+
+        h2 {
+            font-size: 11pt;
+            font-weight: bold;
+            text-transform: uppercase;
+            border-bottom: 1px solid #000;
+            padding-bottom: 2px;
+            margin-top: 10px;
+            margin-bottom: 5px;
+        }
+
+        p {
+            margin-bottom: 6px;
+        }
+
+        ul {
+            margin-left: 18px;
+            margin-bottom: 6px;
+        }
+
+        li {
+            margin-bottom: 3px;
+        }
+
+        .skills-list {
+            list-style-type: none;
+            margin-left: 0;
+        }
+
+        .skills-list li {
+            margin-bottom: 3px;
+        }
+
+        .job-header,
+        .platform-header,
+        .edu-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            gap: 12px;
+        }
+
+        .job-header {
+            margin-top: 8px;
+            margin-bottom: 4px;
+        }
+
+        .platform-header {
+            margin-top: 8px;
+            margin-bottom: 3px;
+        }
+
+        .title {
+            font-weight: bold;
+        }
+
+        .date {
+            font-size: 10pt;
+            white-space: nowrap;
+        }
+
+        .platform-note {
+            font-style: italic;
+            margin-bottom: 3px;
+        }
+
+        .minor-role {
+            margin-top: 8px;
+        }
+
+        .role-scope {
+            margin-bottom: 6px;
+        }
+
+        @media print {
+            body {
+                padding: 0;
+            }
+
+            @page {
+                margin: 0.55in 0.65in;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Charan Lingamgunta</h1>
+    <div class="headline">Staff Software Engineer</div>
+    <div class="headline">Distributed Systems | Developer Platforms | AI Infrastructure</div>
+    <div class="contact">
+        Boston, MA | charan.lingamgunta@gmail.com |
+        <a href="https://linkedin.com/in/charan-lingamgunta">linkedin.com/in/charan-lingamgunta</a>
+    </div>
+
+    <h2>Professional Summary</h2>
+    <p>
+        Staff Software Engineer with 15 years of experience leading distributed systems, developer platforms, and AI infrastructure in regulated enterprise environments. Delivered platform capabilities supporting 10B+ daily transactions, 200+ engineers, 1,000+ APIs, and 20+ production models across healthcare, finance, and government clients. Track record of driving architecture, technical standards, and cross-team execution for secure, high-scale platforms.
+    </p>
+
+    <h2>Core Skills</h2>
+    <ul class="skills-list">
+        <li><strong>Platform & Distributed Systems:</strong> Distributed Systems, Event-Driven Architecture, Pub/Sub & Messaging (JMS, AMQP), API Gateways, Developer Platforms, Multi-Tenant Systems, High-Availability Design</li>
+        <li><strong>AI & ML Platforms:</strong> Agent Harness, Agent Platforms, RAG, LLM Fine-Tuning, Model Evaluation, MCP, DSPy, MLflow, Guardrails, Hugging Face, PyTorch, CUDA, Ray, vLLM, PEFT, LoRA</li>
+        <li><strong>Languages:</strong> Java, Python, TypeScript, JavaScript, C#</li>
+        <li><strong>Cloud & Infrastructure:</strong> AWS (EC2, S3, RDS, ECS, Lambda, CloudWatch), Docker, Terraform, OpenSearch, Airflow, Jenkins, GitHub Actions, SkyPilot</li>
+        <li><strong>Frameworks & Developer Tooling:</strong> Backstage, React, Node.js, FastAPI, Django</li>
+        <li><strong>Security & Compliance:</strong> Zero Trust, OAuth 2.0, SAML, LDAP, HSM, HIPAA, PCI-DSS, SOC 2, FIPS 140-2</li>
+    </ul>
+
+    <h2>Professional Experience</h2>
+
+    <div class="job-header">
+        <div class="title">Staff Software Engineer | Forum Systems | Needham, MA</div>
+        <div class="date">Jun 2014 - Present</div>
+    </div>
+    <p class="role-scope">
+        Progressed from core API gateway engineering into staff-level ownership across developer platform, agent execution, and LLM platform initiatives while shaping shared architecture, security standards, architecture reviews, and ADR practices across teams.
+    </p>
+
+    <div class="platform-header">
+        <div class="title">Concurrent Platform Ownership</div>
+    </div>
+
+    <div class="platform-header">
+        <div class="title">DevX, Developer Experience Platform</div>
+        <div class="date">Jan 2022 - Present</div>
+    </div>
+    <ul>
+        <li>Led architecture for an enterprise developer platform serving Fortune 500 healthcare and financial services clients, with 200+ engineers and 1,000+ APIs across client organizations, unifying API discovery, deployment visibility, dependency mapping, and operational metadata.</li>
+        <li>Designed an OpenAPI-to-tool pipeline that converted 1,000+ API specifications into 2,500+ governed tools, alongside publication workflows for custom non-API tools built from approved Python libraries, and self-serve authoring workflows that let analysts compose pre-tested tool pipelines from engineer-published templates.</li>
+        <li>Delivered multi-tenant capabilities for regulated enterprise deployments, including client-specific plugins, flexible Okta/GitHub/local identity integration, and entity-level permissions for APIs, resources, and AI features.</li>
+        <li>Improved engineering leverage by establishing architecture reviews and ADR practices and mentoring 5 engineers, including 2 promoted to senior roles.</li>
+    </ul>
+
+    <div class="platform-header">
+        <div class="title">AI SecureExec, Agent and Tool Execution Platform</div>
+        <div class="date">Feb 2023 - Present</div>
+    </div>
+    <ul>
+        <li>Built an enterprise agent harness (DSPy-based) handling 10,000+ daily invocations across the six harness components (orchestration, governance, state, memory, observability, and evals), enabling analyst and data science teams at enterprise clients to run DevX-approved tools through ReAct and CodeAct workflows in regulated environments.</li>
+        <li>Engineered an isolated Python execution plane with containerized sandboxing, runtime timeouts, restricted network and filesystem access, and safeguards against malicious code, infinite loops, and data exfiltration.</li>
+        <li>Published an MCP-compatible tool registry for approved API-derived and custom-authored tools, giving teams a governed path to reuse enterprise capabilities in agent workflows.</li>
+        <li>Designed a RAG pipeline supporting document load, scheduled API ingestion, and event-driven updates across 50,000+ documents monthly through parsing, embedding generation, and OpenSearch hybrid (BM25 + kNN) indexing.</li>
+        <li>Implemented a multi-provider LLM gateway via LiteLLM, routing per-tenant traffic across self-hosted and fine-tuned models alongside Bedrock-hosted OpenAI and Anthropic models, with per-tenant access policies, fallback chains, and per-call cost emission and budget enforcement.</li>
+        <li>Implemented content-moderation policies for PII detection, redaction, and safety guardrails, and added MLflow/OpenSearch observability for agent execution, tool usage, and policy decisions.</li>
+    </ul>
+
+    <div class="platform-header">
+        <div class="title">DevX Fine-Tuning, LLM Fine-Tuning and Deployment Platform</div>
+        <div class="date">Jan 2023 - Jun 2025</div>
+    </div>
+    <ul>
+        <li>Developed an LLM fine-tuning platform supporting 20+ production models deployed across enterprise client environments, giving teams a consistent workflow to onboard Hugging Face models, configure prompts and templates, launch jobs, and compare runs in MLflow.</li>
+        <li>Designed reusable dataset pipelines for Excel and JSON training corpora, with versioned datasets, repeatable preprocessing, and reproducible train/validation/test splits.</li>
+        <li>Supported parameter-efficient fine-tuning and checkpoint selection through held-out test sets, MLflow run comparisons, and LLM-as-judge plus human review before release.</li>
+        <li>Operationalized GPU-backed vLLM serving across AWS and GCP, using SkyPilot spot orchestration and Ray-based distributed training to lower training cost and OpenSearch to monitor training and production behavior.</li>
+    </ul>
+
+    <div class="platform-header">
+        <div class="title">Forum Sentry, Enterprise API Gateway and Builder</div>
+        <div class="date">Jun 2014 - Dec 2021</div>
+    </div>
+    <ul>
+        <li>Architected a 4-stage bidirectional streaming pipeline with zero-copy passthrough, automatic retry/failover, and 7 timing checkpoints for latency attribution across 10B+ daily transactions over HTTP, SOAP, JMS, AMQP, SFTP, and S3 protocols.</li>
+        <li>Built event-driven integration capabilities across enterprise messaging systems (JMS, AMQP, IBM MQ, Solace, TIBCO, ActiveMQ), including pub/sub patterns, retry/failover policies, and async processing pipelines for mission-critical financial and government workloads.</li>
+        <li>Designed a no-code workflow engine with 60+ pre-built processors for security, transformation, routing, validation, and integration, enabling complete API implementations that connect to core systems through custom-built adapters, reducing client onboarding from weeks to days.</li>
+        <li>Engineered active-passive failover and 9 load-balancing strategies, supporting sub-minute recovery and 99.99% uptime targets for mission-critical deployments.</li>
+        <li>Implemented the authentication subsystem supporting 11 enterprise identity methods, with multi-tier caching and connection pooling that eliminated 90%+ of directory roundtrips.</li>
+        <li>Engineered multi-tier caching across memory, disk, and Redis with RFC 7234 compliance, request coalescing, and no-code cache policy configuration, reducing backend load by 40-70%.</li>
+    </ul>
+
+    <div class="minor-role">
+        <div class="job-header">
+            <div class="title">Software Developer Intern | Mimecast | Watertown, MA</div>
+            <div class="date">Apr 2013 - Aug 2013</div>
+        </div>
+        <ul>
+            <li>Contributed to an enterprise email encryption application in C# and WPF and added PowerShell-based test automation.</li>
+        </ul>
+    </div>
+
+    <div class="minor-role">
+        <div class="job-header">
+            <div class="title">Associate Software Engineer | AppLabs (CSC) | Hyderabad, India</div>
+            <div class="date">Dec 2009 - Jun 2012</div>
+        </div>
+        <ul>
+            <li>Developed reporting and notification modules for an e-learning platform serving millions of users.</li>
+        </ul>
+    </div>
+
+    <h2>Education</h2>
+    <div class="edu-row">
+        <div><strong>Master of Science in Computer Information Systems</strong>, Northeastern University</div>
+        <div>Boston, MA</div>
+    </div>
+    <div class="edu-row" style="margin-top: 4px;">
+        <div><strong>Bachelor of Engineering in Computer Science</strong>, JNT University</div>
+        <div>India</div>
+    </div>
+</body>
+</html>
