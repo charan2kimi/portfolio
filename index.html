@@ -14,11 +14,11 @@
         body {
             font-family: Arial, Helvetica, sans-serif;
             font-size: 10.5pt;
-            line-height: 1.3;
+            line-height: 1.28;
             color: #111;
             max-width: 8.5in;
             margin: 0 auto;
-            padding: 0.55in 0.65in;
+            padding: 0.5in 0.65in;
         }
 
         h1 {
@@ -39,7 +39,7 @@
         .contact {
             text-align: center;
             font-size: 10pt;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
         }
 
         .contact a {
@@ -53,7 +53,7 @@
             text-transform: uppercase;
             border-bottom: 1px solid #000;
             padding-bottom: 2px;
-            margin-top: 10px;
+            margin-top: 9px;
             margin-bottom: 5px;
         }
 
@@ -63,11 +63,11 @@
 
         ul {
             margin-left: 18px;
-            margin-bottom: 6px;
+            margin-bottom: 5px;
         }
 
         li {
-            margin-bottom: 3px;
+            margin-bottom: 2px;
         }
 
         .skills-list {
@@ -89,12 +89,12 @@
         }
 
         .job-header {
-            margin-top: 8px;
-            margin-bottom: 4px;
+            margin-top: 7px;
+            margin-bottom: 3px;
         }
 
         .platform-header {
-            margin-top: 8px;
+            margin-top: 7px;
             margin-bottom: 3px;
         }
 
@@ -107,15 +107,6 @@
             white-space: nowrap;
         }
 
-        .platform-note {
-            font-style: italic;
-            margin-bottom: 3px;
-        }
-
-        .minor-role {
-            margin-top: 8px;
-        }
-
         .role-scope {
             margin-bottom: 6px;
         }
@@ -126,7 +117,7 @@
             }
 
             @page {
-                margin: 0.55in 0.65in;
+                margin: 0.5in 0.65in;
             }
         }
     </style>
@@ -134,25 +125,26 @@
 <body>
     <h1>Charan Lingamgunta</h1>
     <div class="headline">Staff Software Engineer</div>
-    <div class="headline">Distributed Systems | Developer Platforms | AI Infrastructure</div>
+    <div class="headline">AI/ML Platform | LLM Infrastructure | Distributed Systems</div>
     <div class="contact">
         Boston, MA | charan.lingamgunta@gmail.com |
-        <a href="https://linkedin.com/in/charan-lingamgunta">linkedin.com/in/charan-lingamgunta</a>
+        <a href="https://linkedin.com/in/charan-lingamgunta">linkedin.com/in/charan-lingamgunta</a> |
+        <a href="https://charan-lingamgunta.vercel.app/">charan-lingamgunta.vercel.app</a>
     </div>
 
     <h2>Professional Summary</h2>
     <p>
-        Staff Software Engineer with 15 years of experience leading distributed systems, developer platforms, and AI infrastructure in regulated enterprise environments. Delivered platform capabilities supporting 10B+ daily transactions, 200+ engineers, 1,000+ APIs, and 20+ production models across healthcare, finance, and government clients. Track record of driving architecture, technical standards, and cross-team execution for secure, high-scale platforms.
+        Staff Software Engineer with 15 years building AI/ML platforms and high-scale distributed systems for regulated healthcare, financial services, and government clients. Architected the agent execution, LLM fine-tuning, and developer platforms behind a commercial enterprise AI suite: 20+ production fine-tuned models, 2,500+ governed agent tools, and 200+ engineers served, on a gateway foundation processing 10B+ transactions daily.
     </p>
 
     <h2>Core Skills</h2>
     <ul class="skills-list">
-        <li><strong>Platform & Distributed Systems:</strong> Distributed Systems, Event-Driven Architecture, Pub/Sub & Messaging (JMS, AMQP), API Gateways, Developer Platforms, Multi-Tenant Systems, High-Availability Design</li>
-        <li><strong>AI & ML Platforms:</strong> Agent Harness, Agent Platforms, RAG, LLM Fine-Tuning, Model Evaluation, MCP, DSPy, MLflow, Guardrails, Hugging Face, PyTorch, CUDA, Ray, vLLM, PEFT, LoRA</li>
-        <li><strong>Languages:</strong> Java, Python, TypeScript, JavaScript, C#</li>
-        <li><strong>Cloud & Infrastructure:</strong> AWS (EC2, S3, RDS, ECS, Lambda, CloudWatch), Docker, Terraform, OpenSearch, Airflow, Jenkins, GitHub Actions, SkyPilot</li>
-        <li><strong>Frameworks & Developer Tooling:</strong> Backstage, React, Node.js, FastAPI, Django</li>
-        <li><strong>Security & Compliance:</strong> OAuth 2.0, SAML, LDAP, HSM, HIPAA, HITRUST, PCI-DSS, SOC 2, FIPS 140-2</li>
+        <li><strong>AI &amp; ML Platforms:</strong> LLM Fine-Tuning (PEFT, LoRA), Evaluation Pipelines (Ragas, LLM-as-Judge), LLM Observability &amp; Tracing (MLflow), Model Serving (vLLM), Agent Harness &amp; Platforms, RAG (hybrid BM25 + kNN, RRF), MCP, DSPy, Guardrails, Hugging Face, PyTorch, CUDA, Ray</li>
+        <li><strong>Platform &amp; Distributed Systems:</strong> Distributed Systems, Event-Driven Architecture, Pub/Sub &amp; Messaging (JMS, AMQP, Kafka), API Gateways, Developer Platforms, Multi-Tenant Systems, High-Availability Design</li>
+        <li><strong>Cloud &amp; Infrastructure:</strong> AWS (EC2, S3, RDS, ECS, Lambda, CloudWatch), GCP, Docker, Terraform, OpenSearch, Redis, Airflow, Spark, SkyPilot, Jenkins, GitHub Actions</li>
+        <li><strong>Languages:</strong> Python, Java, TypeScript, JavaScript, C#</li>
+        <li><strong>Frameworks &amp; Developer Tooling:</strong> Backstage, React, Node.js, FastAPI, Django</li>
+        <li><strong>Security &amp; Compliance:</strong> Sandboxed Code Execution, PII Detection &amp; Redaction, Safety Guardrails, OAuth 2.0, SAML, LDAP, HSM, HIPAA, HITRUST, PCI-DSS, SOC 2, FIPS 140-2</li>
     </ul>
 
     <h2>Professional Experience</h2>
@@ -162,35 +154,22 @@
         <div class="date">Jun 2014 - Present</div>
     </div>
     <p class="role-scope">
-        Progressed from core API gateway engineering into staff-level ownership across developer platform, agent execution, and LLM platform initiatives while shaping shared architecture, security standards, architecture reviews, and ADR practices across teams.
+        Progressed from core API gateway engineering into staff-level ownership across LLM platform, agent execution, and developer platform initiatives, shaping shared architecture, evaluation and security standards, and ADR practices across teams.
     </p>
-
-    <div class="platform-header">
-        <div class="title">Concurrent Platform Ownership</div>
-    </div>
-
-    <div class="platform-header">
-        <div class="title">DevX, Developer Experience Platform</div>
-        <div class="date">Jan 2022 - Present</div>
-    </div>
-    <ul>
-        <li>Led architecture for an enterprise developer platform serving Fortune 500 healthcare and financial services clients, with 200+ engineers and 1,000+ APIs across client organizations, unifying API discovery, deployment visibility, dependency mapping, and operational metadata.</li>
-        <li>Designed an OpenAPI-to-tool pipeline that converted 1,000+ API specifications into 2,500+ governed tools, alongside publication workflows for custom non-API tools built from approved Python libraries, and self-serve authoring workflows that let analysts compose pre-tested tool pipelines from engineer-published templates.</li>
-        <li>Delivered multi-tenant capabilities for regulated enterprise deployments, including client-specific plugins, flexible Okta/GitHub/local identity integration, and entity-level permissions for APIs, resources, and AI features.</li>
-        <li>Improved engineering leverage by establishing architecture reviews and ADR practices and mentoring 5 engineers, including 2 promoted to senior roles.</li>
-    </ul>
 
     <div class="platform-header">
         <div class="title">AI SecureExec, Agent and Tool Execution Platform</div>
         <div class="date">Feb 2023 - Present</div>
     </div>
     <ul>
-        <li>Built an enterprise agent harness (DSPy-based) handling 10,000+ daily invocations across the six harness components (orchestration, governance, state, memory, observability, and evals), enabling analyst and data science teams at enterprise clients to run DevX-approved tools through ReAct and CodeAct workflows in regulated environments.</li>
-        <li>Engineered an isolated Python execution plane with containerized sandboxing, runtime timeouts, restricted network and filesystem access, and safeguards against malicious code, infinite loops, and data exfiltration.</li>
-        <li>Published an MCP-compatible tool registry for approved API-derived and custom-authored tools, giving teams a governed path to reuse enterprise capabilities in agent workflows.</li>
-        <li>Designed multiple RAG pipelines (classic one-shot and agentic ReAct loops) over OpenSearch hybrid (BM25 + kNN) retrieval, ingesting 50,000+ documents monthly via PDF/Office chunking, embedding generation, scheduled API ingestion, and event-driven updates.</li>
-        <li>Implemented a multi-provider LLM gateway via LiteLLM, routing per-tenant traffic across self-hosted and fine-tuned models alongside Bedrock-hosted OpenAI and Anthropic models, with per-tenant access policies, fallback chains, and per-call cost emission and budget enforcement.</li>
-        <li>Implemented content-moderation policies for PII detection, redaction, and safety guardrails, and added MLflow/OpenSearch observability for agent execution, tool usage, and policy decisions.</li>
+        <li>Built the enterprise agent harness (DSPy) behind a commercial AI platform: analyst and data science teams run 10,000+ governed agent invocations daily through ReAct and CodeAct workflows, each agent bound to its own model, with results streamed over SSE or dispatched to background workers.</li>
+        <li>Designed per-tenant sandboxed execution for user-authored agent code: an AST-gated interpreter enforcing import allowlists, secrets scanning, and runtime limits at parse time and on every execution step, so semi-trusted analyst code reaches a live multi-tenant runtime without a platform engineer reviewing every change.</li>
+        <li>Published an MCP-compatible tool registry with discovery, scoped per-identity authorization, and SOC-aligned audit, giving teams a governed path to reuse 2,500+ enterprise tools in agent workflows; both DevX and SecureExec expose MCP servers.</li>
+        <li>Designed agentic RAG pipelines over OpenSearch hybrid retrieval (BM25 + kNN with reciprocal rank fusion and query decomposition), with judge-in-the-loop correction that catches both hallucinations and false gaps; self-hosted embeddings keep data in-tenant and eliminate per-token cost at 50,000+ documents ingested monthly.</li>
+        <li>Built the offline evaluation gate: a versioned golden dataset over the regulated corpus, scored by Ragas metrics and custom LLM-as-judge graders including a false-gaps judge, run in CI so prompt, model, or tool changes that regress faithfulness are blocked before release.</li>
+        <li>Instrumented MLflow tracing across agent execution, tool usage, and policy decisions, with OpenSearch structured logging, giving teams replayable traces to debug and measure agent behavior in production.</li>
+        <li>Implemented a multi-provider LLM gateway (LiteLLM) routing per-tenant traffic across self-hosted, fine-tuned, and Bedrock-hosted models with per-tenant access policies, context-window-aware token budgeting, and per-call cost emission, letting regulated tenants pin to private models for data residency.</li>
+        <li>Integrated agent inputs and outputs with the enterprise PII detection and redaction control plane, enforcing content-moderation and safety guardrails in HIPAA-regulated deployments.</li>
     </ul>
 
     <div class="platform-header">
@@ -198,10 +177,20 @@
         <div class="date">Jan 2023 - Jun 2025</div>
     </div>
     <ul>
-        <li>Developed an LLM fine-tuning platform supporting 20+ production models deployed across enterprise client environments, giving teams a consistent workflow to onboard Hugging Face models, configure prompts and templates, launch jobs, and compare runs in MLflow.</li>
-        <li>Designed reusable dataset pipelines for Excel and JSON training corpora, with versioned datasets, repeatable preprocessing, and reproducible train/validation/test splits.</li>
-        <li>Supported parameter-efficient fine-tuning and checkpoint selection through held-out test sets, MLflow run comparisons, and LLM-as-judge plus human review before release.</li>
-        <li>Operationalized GPU-backed vLLM serving across AWS and GCP, using SkyPilot spot orchestration and Ray-based distributed training to lower training cost and OpenSearch to monitor training and production behavior.</li>
+        <li>Developed the LLM fine-tuning platform behind 20+ production models at enterprise clients: one workflow to onboard Hugging Face models, launch PEFT/LoRA jobs, and compare runs in MLflow, with LLM-as-judge plus human review gating every release.</li>
+        <li>Lowered training cost with SkyPilot spot orchestration and Ray distributed training across AWS and GCP; served models on GPU-backed vLLM with OpenSearch monitoring of training and production behavior.</li>
+        <li>Built versioned dataset pipelines for Excel and JSON corpora with repeatable preprocessing and reproducible train/validation/test splits.</li>
+    </ul>
+
+    <div class="platform-header">
+        <div class="title">DevX, Developer Experience Platform</div>
+        <div class="date">Jan 2022 - Present</div>
+    </div>
+    <ul>
+        <li>Led architecture for the developer platform serving Fortune 500 healthcare and financial services clients, unifying API discovery, deployment visibility, dependency mapping, and operational metadata; the largest single deployment serves 200+ engineers and 1,000+ APIs.</li>
+        <li>Converted 1,000+ API specifications into 2,500+ governed, MCP-compatible tools through an OpenAPI-to-tool pipeline, removing the review-queue bottleneck for agent tool publication.</li>
+        <li>Built the safe self-authoring path that drove enterprise adoption: analysts write custom tools in a Monaco-based editor against an allowed Python library set, validate them in sandbox tests, and publish only on passing, gated by entity-level RBAC and tenant isolation.</li>
+        <li>Delivered multi-tenant capabilities for regulated deployments (client-specific plugins, Okta/GitHub/local identity integration, entity-level permissions) and mentored 5 engineers, 2 of whom were promoted to senior roles.</li>
     </ul>
 
     <div class="platform-header">
@@ -209,33 +198,18 @@
         <div class="date">Jun 2014 - Dec 2021</div>
     </div>
     <ul>
-        <li>Architected a 4-stage bidirectional streaming pipeline with zero-copy passthrough, automatic retry/failover, and 7 timing checkpoints for latency attribution across 10B+ daily transactions over HTTP, SOAP, JMS, AMQP, SFTP, and S3 protocols.</li>
-        <li>Built event-driven integration capabilities across enterprise messaging systems (JMS, AMQP, IBM MQ, Solace, TIBCO, ActiveMQ), including pub/sub patterns, retry/failover policies, and async processing pipelines for mission-critical financial and government workloads.</li>
-        <li>Designed a no-code workflow engine with 60+ pre-built processors for security, transformation, routing, validation, and integration, enabling complete API implementations that connect to core systems through custom-built adapters, reducing client onboarding from weeks to days.</li>
-        <li>Engineered active-passive failover and 9 load-balancing strategies, supporting sub-minute recovery and 99.99% uptime targets for mission-critical deployments.</li>
-        <li>Implemented the authentication subsystem supporting 11 enterprise identity methods, with multi-tier caching and connection pooling that eliminated 90%+ of directory roundtrips.</li>
-        <li>Engineered multi-tier caching across memory, disk, and Redis with RFC 7234 compliance, request coalescing, and no-code cache policy configuration, reducing backend load by 40-70%.</li>
+        <li>Architected the 4-stage bidirectional streaming pipeline carrying 10B+ transactions daily across HTTP, SOAP, JMS, AMQP, SFTP, and S3, with zero-copy passthrough, automatic retry/failover, and 7 timing checkpoints for stage-level latency attribution.</li>
+        <li>Cut backend load 40-70% with multi-tier API response caching (memory, disk, Redis; RFC 7234-compliant) with request coalescing for cache-stampede protection, configured through no-code cache policies.</li>
+        <li>Designed the no-code API builder: 60+ processors for security, data transformation, routing, and validation, sandboxed inline JavaScript (on the JVM) and Python scripting, and 20+ partner, cloud, and database integrations, cutting client onboarding from weeks to days.</li>
+        <li>Engineered active-passive failover with 9 load-balancing strategies, sub-minute recovery, and 99.99% uptime targets for financial and government workloads, on FIPS 140-2, HSM-backed cryptography.</li>
+        <li>Implemented the authentication subsystem supporting 11 enterprise identity methods, with auth-side caching and connection pooling that eliminated 90%+ of directory roundtrips.</li>
     </ul>
 
-    <div class="minor-role">
-        <div class="job-header">
-            <div class="title">Software Developer Intern | Mimecast | Watertown, MA</div>
-            <div class="date">Apr 2013 - Aug 2013</div>
-        </div>
-        <ul>
-            <li>Contributed to an enterprise email encryption application in C# and WPF and added PowerShell-based test automation.</li>
-        </ul>
-    </div>
-
-    <div class="minor-role">
-        <div class="job-header">
-            <div class="title">Associate Software Engineer | AppLabs (CSC) | Hyderabad, India</div>
-            <div class="date">Dec 2009 - Jun 2012</div>
-        </div>
-        <ul>
-            <li>Developed reporting and notification modules for an e-learning platform serving millions of users.</li>
-        </ul>
-    </div>
+    <h2>Earlier Experience</h2>
+    <ul>
+        <li><strong>Software Developer Intern, Mimecast, Watertown, MA (2013):</strong> enterprise email encryption application in C#/WPF with PowerShell test automation.</li>
+        <li><strong>Associate Software Engineer, AppLabs (CSC), Hyderabad, India (2009 - 2012):</strong> reporting and notification modules for an e-learning platform serving millions of users.</li>
+    </ul>
 
     <h2>Education</h2>
     <div class="edu-row">
