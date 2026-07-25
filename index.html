@@ -1,227 +1,173 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Charan Lingamgunta Resume</title>
-    <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        body {
-            font-family: Arial, Helvetica, sans-serif;
-            font-size: 10.5pt;
-            line-height: 1.28;
-            color: #111;
-            max-width: 8.5in;
-            margin: 0 auto;
-            padding: 0.5in 0.65in;
-        }
-
-        h1 {
-            font-size: 18pt;
-            text-align: center;
-            margin-bottom: 3px;
-            letter-spacing: 0.3px;
-        }
-
-        .headline {
-            text-align: center;
-            font-size: 10.5pt;
-            font-weight: bold;
-            text-transform: uppercase;
-            margin-bottom: 4px;
-        }
-
-        .contact {
-            text-align: center;
-            font-size: 10pt;
-            margin-bottom: 10px;
-        }
-
-        .contact a {
-            color: #111;
-            text-decoration: none;
-        }
-
-        h2 {
-            font-size: 11pt;
-            font-weight: bold;
-            text-transform: uppercase;
-            border-bottom: 1px solid #000;
-            padding-bottom: 2px;
-            margin-top: 9px;
-            margin-bottom: 5px;
-        }
-
-        p {
-            margin-bottom: 6px;
-        }
-
-        ul {
-            margin-left: 18px;
-            margin-bottom: 5px;
-        }
-
-        li {
-            margin-bottom: 2px;
-        }
-
-        .skills-list {
-            list-style-type: none;
-            margin-left: 0;
-        }
-
-        .skills-list li {
-            margin-bottom: 3px;
-        }
-
-        .job-header,
-        .platform-header,
-        .edu-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: baseline;
-            gap: 12px;
-        }
-
-        .job-header {
-            margin-top: 7px;
-            margin-bottom: 3px;
-        }
-
-        .platform-header {
-            margin-top: 7px;
-            margin-bottom: 3px;
-        }
-
-        .title {
-            font-weight: bold;
-        }
-
-        .date {
-            font-size: 10pt;
-            white-space: nowrap;
-        }
-
-        .role-scope {
-            margin-bottom: 6px;
-        }
-
-        @media print {
-            body {
-                padding: 0;
-            }
-
-            @page {
-                margin: 0.5in 0.65in;
-            }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Charan Lingamgunta | AI Platform Architecture</title>
+<meta name="description" content="Charan Lingamgunta, Staff Software Engineer. Architecture deep dives of the DevX developer platform, the agent execution runtime, the model-lifecycle plane, and the Forum Sentry API gateway.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%232563eb'/><text x='50' y='68' font-size='52' text-anchor='middle' fill='white' font-family='Arial'>CL</text></svg>">
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Charan Lingamgunta</h1>
-    <div class="headline">Staff Software Engineer</div>
-    <div class="headline">AI/ML Platform | LLM Infrastructure | Distributed Systems</div>
-    <div class="contact">
-        Boston, MA | charan.lingamgunta@gmail.com |
-        <a href="https://linkedin.com/in/charan-lingamgunta">linkedin.com/in/charan-lingamgunta</a> |
-        <a href="https://charan-lingamgunta.vercel.app/">charan-lingamgunta.vercel.app</a>
+<div class="wrap">
+
+<nav class="nav">
+  <span class="namegroup">
+    <a class="home" href="index.html">Charan Lingamgunta</a>
+    <a class="contact" href="https://linkedin.com/in/charan-lingamgunta">LinkedIn</a>
+    <button class="copybtn" type="button" onclick="navigator.clipboard.writeText('charan.lingamgunta@gmail.com');this.textContent='Copied';this.classList.add('done');setTimeout(()=>{this.textContent='Email';this.classList.remove('done');},1200)">Email</button>
+  </span>
+  <a class="active" href="index.html">Overview</a>
+  <a href="devx.html">DevX</a>
+  <a href="agent-execution.html">Agent Execution</a>
+  <a href="finetuning.html">Fine-Tuning</a>
+  <a href="sentry.html">Sentry</a>
+  <a class="cta" href="resume.pdf">Resume (PDF)</a>
+</nav>
+
+<header class="hero">
+  <h1>Fifteen years shipping platforms that stay in production.</h1>
+  <p class="tagline">
+    Agent execution, LLM fine-tuning, developer platforms, and an API gateway at 10B+ transactions a day.
+    Staff Software Engineer in Boston, building the control planes and runtimes behind commercial enterprise AI
+    for Fortune 500 healthcare and financial services clients.
+  </p>
+</header>
+
+<section class="cards">
+  <a class="card devx" href="devx.html">
+    <span class="num">2,500+</span>
+    <span class="numlabel">governed tools from 1,000+ APIs</span>
+    <h3>DevX</h3>
+    <p>The umbrella developer platform: API devportal, agent authoring and evaluation, governance, and the full model lifecycle (fine-tuning, registry, serving, monitoring) as planes.</p>
+    <span class="go">Architecture &#8594;</span>
+  </a>
+  <a class="card secureexec" href="agent-execution.html">
+    <span class="num">10,000+</span>
+    <span class="numlabel">governed agent invocations daily</span>
+    <h3>Agent Execution Platform</h3>
+    <p>The realtime runtime: DSPy harness, sandboxed execution, agentic RAG, attribute-based policy at every tool call, tracing, and a golden-dataset gate.</p>
+    <span class="go">Architecture &#8594;</span>
+  </a>
+  <a class="card finetuning" href="finetuning.html">
+    <span class="num">20+</span>
+    <span class="numlabel">production fine-tuned models</span>
+    <h3>Inside DevX: Fine-Tuning</h3>
+    <p>DevX's model-lifecycle plane: versioned datasets, spot-orchestrated distributed training with checkpoint steering, a judged gate, vLLM serving.</p>
+    <span class="go">Architecture &#8594;</span>
+  </a>
+  <a class="card sentry" href="sentry.html">
+    <span class="num">10B+</span>
+    <span class="numlabel">transactions daily</span>
+    <h3>Forum Sentry</h3>
+    <p>The API security gateway (2014-2021): streaming pipeline, no-code policy engine, identity brokering, 99.99% uptime targets. The governance DNA underneath it all.</p>
+    <span class="go">Architecture &#8594;</span>
+  </a>
+</section>
+
+<h2 class="sec" id="ecosystem">Ecosystem: one control plane, one runtime, one foundation</h2>
+<p class="secnote">
+  System-context view. DevX is the umbrella developer platform where APIs, tools, agents, evaluations, and the full
+  model lifecycle are authored, governed, and published. The Agent Execution Platform is the separate realtime
+  runtime that executes what DevX publishes. Forum Sentry is not part of this loop: it sits lateral to it, the seven
+  years of gateway and governance engineering the AI platforms inherit.
+</p>
+
+<div class="arch">
+  <div class="dtitle">Platform ecosystem, system context</div>
+  <div class="dsub">Boxes are systems I architected unless marked external. Bands read top to bottom in lifecycle order.</div>
+
+  <div class="eco">
+    <div class="tier">
+      <div class="tlabel">External systems</div>
+      <div class="pboxes">
+        <div class="box ext"><b>Client APIs</b><span class="role">1,000+ specs at the largest client</span></div>
+        <div class="box ext"><b>Okta / GitHub / IdP</b><span class="role">enterprise identity</span></div>
+        <div class="box ext"><b>Amazon Bedrock</b><span class="role">hosted models</span></div>
+        <div class="box ext"><b>Hugging Face</b><span class="role">base model hub</span></div>
+        <div class="box ext"><b>AWS + GCP</b><span class="role">compute clouds</span></div>
+      </div>
     </div>
 
-    <h2>Professional Summary</h2>
-    <p>
-        Staff Software Engineer with 15 years building AI/ML platforms and high-scale distributed systems for regulated healthcare, financial services, and government clients. Architected the agent execution, LLM fine-tuning, and developer platforms behind a commercial enterprise AI suite: 20+ production fine-tuned models, 2,500+ governed agent tools, and 200+ engineers served, on a gateway foundation processing 10B+ transactions daily.
-    </p>
+    <div class="conn">DevX ingests client APIs, brokers identity, onboards base models, and orchestrates compute</div>
 
-    <h2>Core Skills</h2>
-    <ul class="skills-list">
-        <li><strong>AI &amp; ML Platforms:</strong> LLM Fine-Tuning (PEFT, LoRA), Evaluation Pipelines (Ragas, LLM-as-Judge), LLM Observability &amp; Tracing (MLflow), Model Serving (vLLM), Agent Harness &amp; Platforms, RAG (hybrid BM25 + kNN, RRF), MCP, DSPy, Guardrails, Hugging Face, PyTorch, CUDA, Ray</li>
-        <li><strong>Platform &amp; Distributed Systems:</strong> Distributed Systems, Event-Driven Architecture, Pub/Sub &amp; Messaging (JMS, AMQP, Kafka), API Gateways, Developer Platforms, Multi-Tenant Systems, High-Availability Design</li>
-        <li><strong>Cloud &amp; Infrastructure:</strong> AWS (EC2, S3, RDS, ECS, Lambda, CloudWatch), GCP, Docker, Terraform, OpenSearch, Redis, Airflow, Spark, SkyPilot, Jenkins, GitHub Actions</li>
-        <li><strong>Languages:</strong> Python, Java, TypeScript, JavaScript, C#</li>
-        <li><strong>Frameworks &amp; Developer Tooling:</strong> Backstage, React, Node.js, FastAPI, Django</li>
-        <li><strong>Security &amp; Compliance:</strong> Sandboxed Code Execution, PII Detection &amp; Redaction, Safety Guardrails, OAuth 2.0, SAML, LDAP, HSM, HIPAA, HITRUST, PCI-DSS, SOC 2, FIPS 140-2</li>
-    </ul>
-
-    <h2>Professional Experience</h2>
-
-    <div class="job-header">
-        <div class="title">Staff Software Engineer | Forum Systems | Needham, MA</div>
-        <div class="date">Jan 2022 - Present</div>
+    <div class="tier devx">
+      <div class="tlabel"><a href="devx.html">DevX</a><small>the umbrella developer platform (control plane)</small></div>
+      <div class="pboxes">
+        <div class="box"><b>API devportal</b><span class="role">discovery, catalog, deployment visibility, dependency mapping</span></div>
+        <div class="box"><b>Agent + tool authoring</b><span class="role">OpenAPI-to-tool pipeline, Monaco self-authoring, DSPy agents; test, publish, audit</span></div>
+        <div class="box"><b>LLMOps + evaluation</b><span class="role">sandbox tests, versioned golden datasets, prompt compilation, model and agent evals</span></div>
+        <div class="box"><b><a href="finetuning.html">Model lifecycle</a></b><span class="role">fine-tuning, model registry, vLLM serving, monitoring</span></div>
+        <div class="box gate"><b>Governance overlay</b><span class="role">least-privilege entitlements, tenant isolation, audit</span></div>
+        <div class="box"><b>Ingestion</b><span class="role">Airflow + Spark to hybrid indexes and versioned datasets</span></div>
+      </div>
     </div>
-    <p class="role-scope">
-        Promoted to staff-level ownership across LLM platform, agent execution, and developer platform initiatives, shaping shared architecture, evaluation and security standards, and ADR practices across teams.
-    </p>
 
-    <div class="platform-header">
-        <div class="title">AI SecureExec, Agent and Tool Execution Platform</div>
-        <div class="date">Feb 2023 - Present</div>
-    </div>
-    <ul>
-        <li>Built the enterprise agent harness (DSPy) behind a commercial AI platform: analyst and data science teams run 10,000+ governed agent invocations daily through ReAct and CodeAct workflows, each agent bound to its own model, with results streamed over SSE or dispatched to background workers.</li>
-        <li>Designed per-tenant sandboxed execution for user-authored agent code: an AST-gated interpreter enforcing import allowlists, secrets scanning, and runtime limits at parse time and on every execution step, so semi-trusted analyst code reaches a live multi-tenant runtime without a platform engineer reviewing every change.</li>
-        <li>Published an MCP-compatible tool registry with discovery, scoped per-identity authorization, and SOC-aligned audit, giving teams a governed path to reuse 2,500+ enterprise tools in agent workflows; both DevX and SecureExec expose MCP servers.</li>
-        <li>Designed agentic RAG pipelines over OpenSearch hybrid retrieval (BM25 + kNN with reciprocal rank fusion and query decomposition), with judge-in-the-loop correction that catches both hallucinations and false gaps; self-hosted embeddings keep data in-tenant and eliminate per-token cost at 50,000+ documents ingested monthly.</li>
-        <li>Built the offline evaluation gate: a versioned golden dataset over the regulated corpus, scored by Ragas metrics and custom LLM-as-judge graders including a false-gaps judge, run in CI so prompt, model, or tool changes that regress faithfulness are blocked before release.</li>
-        <li>Instrumented MLflow tracing across agent execution, tool usage, and policy decisions, with OpenSearch structured logging, giving teams replayable traces to debug and measure agent behavior in production.</li>
-        <li>Implemented a multi-provider LLM gateway (LiteLLM) routing per-tenant traffic across self-hosted, fine-tuned, and Bedrock-hosted models with per-tenant access policies, context-window-aware token budgeting, and per-call cost emission, letting regulated tenants pin to private models for data residency.</li>
-        <li>Integrated agent inputs and outputs with the enterprise PII detection and redaction control plane, enforcing content-moderation and safety guardrails in HIPAA-regulated deployments.</li>
-    </ul>
+    <div class="conn"><em>gated publish:</em> only artifacts that pass sandbox tests and evals reach the runtime; served models register into its gateway</div>
 
-    <div class="platform-header">
-        <div class="title">DevX Fine-Tuning, LLM Fine-Tuning and Deployment Platform</div>
-        <div class="date">Jan 2023 - Jun 2025</div>
+    <div class="tier secureexec">
+      <div class="tlabel"><a href="agent-execution.html">Agent Execution Platform</a><small>the realtime runtime (data plane)</small></div>
+      <div class="pboxes">
+        <div class="box"><b>DSPy agent harness</b><span class="role">ReAct + CodeAct over governed tools</span></div>
+        <div class="box gate"><b>Policy + sandbox</b><span class="role">attribute-based decision per tool call, sandboxed execution, PII redaction</span></div>
+        <div class="box"><b>Agentic RAG</b><span class="role">hybrid retrieval with per-run judge correction</span></div>
+        <div class="box"><b>LLM gateway</b><span class="role">LiteLLM across self-hosted, fine-tuned, and Bedrock models</span></div>
+        <div class="box"><b>Observability</b><span class="role">MLflow traces, golden-dataset CI gate, separate online production evals, audit</span></div>
+      </div>
     </div>
-    <ul>
-        <li>Developed the LLM fine-tuning platform behind 20+ production models at enterprise clients: one workflow to onboard Hugging Face models, launch PEFT/LoRA jobs, and compare runs in MLflow, with LLM-as-judge plus human review gating every release.</li>
-        <li>Lowered training cost with SkyPilot spot orchestration and Ray distributed training across AWS and GCP; served models on GPU-backed vLLM with OpenSearch monitoring of training and production behavior.</li>
-        <li>Built versioned dataset pipelines for Excel and JSON corpora with repeatable preprocessing and reproducible train/validation/test splits.</li>
-    </ul>
 
-    <div class="platform-header">
-        <div class="title">DevX, Developer Experience Platform</div>
-        <div class="date">Jan 2022 - Present</div>
-    </div>
-    <ul>
-        <li>Led architecture for the developer platform serving Fortune 500 healthcare and financial services clients, unifying API discovery, deployment visibility, dependency mapping, and operational metadata; the largest single deployment serves 200+ engineers and 1,000+ APIs.</li>
-        <li>Converted 1,000+ API specifications into 2,500+ governed, MCP-compatible tools through an OpenAPI-to-tool pipeline, removing the review-queue bottleneck for agent tool publication.</li>
-        <li>Built the safe self-authoring path that drove enterprise adoption: analysts write custom tools in a Monaco-based editor against an allowed Python library set, validate them in sandbox tests, and publish only on passing, gated by entity-level RBAC and tenant isolation.</li>
-        <li>Delivered multi-tenant capabilities for regulated deployments (client-specific plugins, Okta/GitHub/local identity integration, entity-level permissions) and mentored 5 engineers, 2 of whom were promoted to senior roles.</li>
-    </ul>
+    <div class="conn"><em>serves:</em> analyst and data science teams, 10,000+ governed agent invocations daily over SSE and background workers</div>
 
-    <div class="job-header">
-        <div class="title">Senior Software Engineer, Distributed Systems | Forum Systems | Needham, MA</div>
-        <div class="date">Jun 2014 - Dec 2021</div>
+    <div class="tier spine">
+      <div class="tlabel">Governance spine</div>
+      <div class="pboxes">
+        <div class="box"><b>Identity</b><span class="role">per-identity scoping, IdP integration</span></div>
+        <div class="box"><b>Tenant isolation</b><span class="role">silo-model multi-tenancy</span></div>
+        <div class="box"><b>Policy</b><span class="role">attribute-based for agent flows, role-based for portal actions</span></div>
+        <div class="box"><b>Audit</b><span class="role">MLflow, OpenSearch, and OpenTelemetry evidence trail</span></div>
+      </div>
     </div>
-    <div class="platform-header">
-        <div class="title">Forum Sentry, Enterprise API Gateway and Builder</div>
-    </div>
-    <ul>
-        <li>Architected the 4-stage bidirectional streaming pipeline carrying 10B+ transactions daily across HTTP, SOAP, JMS, AMQP, SFTP, and S3, with zero-copy passthrough, automatic retry/failover, and 7 timing checkpoints for stage-level latency attribution.</li>
-        <li>Cut backend load 40-70% with multi-tier API response caching (memory, disk, Redis; RFC 7234-compliant) with request coalescing for cache-stampede protection, configured through no-code cache policies.</li>
-        <li>Designed the no-code API builder: 60+ processors for security, data transformation, routing, and validation, sandboxed inline JavaScript (on the JVM) and Python scripting, and 20+ partner, cloud, and database integrations, cutting client onboarding from weeks to days.</li>
-        <li>Engineered active-passive failover with 9 load-balancing strategies, sub-minute recovery, and 99.99% uptime targets for financial and government workloads, on FIPS 140-2, HSM-backed cryptography.</li>
-        <li>Implemented the authentication subsystem supporting 11 enterprise identity methods, with auth-side caching and connection pooling that eliminated 90%+ of directory roundtrips.</li>
-    </ul>
 
-    <h2>Earlier Experience</h2>
-    <ul>
-        <li><strong>Software Developer Intern, Mimecast, Watertown, MA (2013):</strong> enterprise email encryption application in C#/WPF with PowerShell test automation.</li>
-        <li><strong>Associate Software Engineer, AppLabs (CSC), Hyderabad, India (2009 - 2012):</strong> reporting and notification modules for an e-learning platform serving millions of users.</li>
-    </ul>
+    <div class="conn"><em>lineage:</em> the governance and gateway DNA comes from seven years building Sentry</div>
 
-    <h2>Education</h2>
-    <div class="edu-row">
-        <div><strong>Master of Science in Computer Information Systems</strong>, Northeastern University</div>
-        <div>Boston, MA</div>
+    <div class="tier sentry">
+      <div class="tlabel"><a href="sentry.html">Forum Sentry</a><small>2014-2021 foundation, lateral to the AI loop</small></div>
+      <div class="pboxes">
+        <div class="box"><b>Streaming pipeline</b><span class="role">10B+ transactions/day, zero-copy, 4 stages</span></div>
+        <div class="box"><b>Policy framework</b><span class="role">200+ versioned, audited policy types; 60+ no-code processors</span></div>
+        <div class="box"><b>Identity brokering</b><span class="role">11+ methods: Okta, Ping, SiteMinder, Kerberos, LDAP/AD; FIPS 140-2 + HSM</span></div>
+        <div class="box"><b>Threat defense</b><span class="role">3-tier WAF and sensor-triggered intrusion detection</span></div>
+      </div>
     </div>
-    <div class="edu-row" style="margin-top: 4px;">
-        <div><strong>Bachelor of Engineering in Computer Science</strong>, JNT University</div>
-        <div>India</div>
-    </div>
+  </div>
+
+  <div class="legend">
+    <span class="k"><span class="sw"></span> platform component</span>
+    <span class="k"><span class="sw gate"></span> enforcement point</span>
+    <span class="k"><span class="sw ext"></span> external system (opaque)</span>
+    <span class="k"><span class="sw plane"></span> band = one platform / concern</span>
+  </div>
+</div>
+
+<h2 class="sec">How to read this site</h2>
+<p class="prose lead">
+  Each page goes one level deeper: a container-level diagram with named enforcement points, a numbered runtime flow,
+  the data / product / deployment layers, and the key architecture decisions written the way I make them: the call,
+  the alternative considered, and the consequence. Start with <a href="devx.html">DevX</a> for the umbrella platform
+  and <a href="agent-execution.html">the Agent Execution Platform</a> for the runtime, or
+  <a href="finetuning.html">Fine-Tuning</a> for DevX's training-to-serving plane.
+</p>
+
+<footer class="foot">
+  <div>Charan Lingamgunta &#183; Staff Software Engineer &#183; Boston, MA &#183; <a href="mailto:charan.lingamgunta@gmail.com">charan.lingamgunta@gmail.com</a> &#183; <a href="https://linkedin.com/in/charan-lingamgunta">LinkedIn</a> &#183; <a href="resume.pdf">Resume</a></div>
+  <div class="terms">
+    Terms used across these pages: MCP = Model Context Protocol &#183; ABAC = Attribute-Based Access Control &#183;
+    RBAC = Role-Based Access Control &#183; RAG = Retrieval-Augmented Generation &#183; SSE = Server-Sent Events &#183;
+    AST = Abstract Syntax Tree &#183; PEFT = Parameter-Efficient Fine-Tuning &#183; LoRA = Low-Rank Adaptation &#183;
+    SOC = System and Organization Controls &#183; PII = Personally Identifiable Information &#183; IdP = Identity Provider
+  </div>
+</footer>
+
+</div>
 </body>
 </html>

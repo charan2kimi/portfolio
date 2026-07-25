@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agent Execution Platform Architecture | Charan Lingamgunta</title>
+<meta name="description" content="Agent execution platform: attribute-based authorization re-evaluated at every tool call, sandboxed execution, agentic RAG with a per-run judge, LiteLLM multi-provider gateway, MLflow + OpenTelemetry tracing, and a golden-dataset CI gate.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%232563eb'/><text x='50' y='68' font-size='52' text-anchor='middle' fill='white' font-family='Arial'>CL</text></svg>">
+<link rel="stylesheet" href="style.css">
+</head>
+<body class="p-secureexec">
+<div class="wrap">
+
+<nav class="nav">
+  <span class="namegroup">
+    <a class="home" href="index.html">Charan Lingamgunta</a>
+    <a class="contact" href="https://linkedin.com/in/charan-lingamgunta">LinkedIn</a>
+    <button class="copybtn" type="button" onclick="navigator.clipboard.writeText('charan.lingamgunta@gmail.com');this.textContent='Copied';this.classList.add('done');setTimeout(()=>{this.textContent='Email';this.classList.remove('done');},1200)">Email</button>
+  </span>
+  <a href="index.html">Overview</a>
+  <a href="devx.html">DevX</a>
+  <a class="active" href="agent-execution.html">Agent Execution</a>
+  <a href="finetuning.html">Fine-Tuning</a>
+  <a href="sentry.html">Sentry</a>
+  <a class="cta" href="resume.pdf">Resume (PDF)</a>
+</nav>
+
+<header class="pagehead">
+  <span class="accentbar"></span>
+  <h1>Agent Execution Platform</h1>
+  <p class="scope">
+    <strong>Container-level view: the realtime data plane, with its policy, model, and observability planes.</strong>
+    The enterprise agent runtime where analyst and data science teams run 10,000+ governed agent invocations daily,
+    with authorization re-evaluated at every tool call inside the agent loop. Executes only artifacts DevX has
+    tested and published. HIPAA-regulated deployments. Feb 2023 to present.
+  </p>
+</header>
+
+<section class="metrics">
+  <div class="metric"><b>10,000+</b><span>governed agent invocations daily</span></div>
+  <div class="metric"><b>50,000+</b><span>documents ingested monthly, corpus in-tenant</span></div>
+  <div class="metric"><b>2,500+</b><span>governed tools, discovery filtered per identity</span></div>
+  <div class="metric"><b>3</b><span>model classes: self-hosted, fine-tuned, Bedrock</span></div>
+</section>
+
+<h2 class="sec">Architecture</h2>
+<p class="secnote">
+  Five planes. The agent plane does the work; the policy plane decides what each step may touch and re-decides on
+  every call; the model plane decides what it runs on and what it costs; the observability plane proves what
+  happened. Every enforcement point is marked.
+</p>
+
+<div class="arch">
+  <div class="dtitle">Agent Execution Platform, container-level, one-invocation request path</div>
+  <div class="dsub">ABAC = Attribute-Based Access Control. AST = Abstract Syntax Tree. Read top to bottom; connectors name the contract between planes.</div>
+
+  <div class="plane">
+    <div class="plabel">Entry<small>multi-tenant front door</small></div>
+    <div class="pboxes">
+      <div class="box"><b>Invocation API</b><span class="role">every request binds tenant and identity context; results stream over Server-Sent Events (SSE) or dispatch to background workers</span><span class="tech">FastAPI, SSE</span></div>
+      <div class="box gate"><b>Policy decision point</b><span class="role">resolves the ABAC decision from tenant, identity, tool entitlement, and residency attributes; ABAC governs agent flows, RBAC governs human portal actions</span></div>
+    </div>
+  </div>
+
+  <div class="conn"><em>the authorized invocation context</em> travels with the agent through every step below</div>
+
+  <div class="plane">
+    <div class="plabel">Agent plane<small>the data plane</small></div>
+    <div class="pboxes">
+      <div class="box"><b>DSPy harness</b><span class="role">ReAct and CodeAct workflows over governed tools; each agent bound to its own model</span><span class="tech">DSPy</span></div>
+      <div class="box"><b>Agentic RAG</b><span class="role">retrieval as a tool the agent calls iteratively: hybrid BM25 + kNN with reciprocal rank fusion and query decomposition</span><span class="tech">OpenSearch</span></div>
+      <div class="box"><b>Per-run judge correction</b><span class="role">a per-run LLM-as-judge inside the live RAG agent, checking the draft against retrieved evidence; hallucinations and false gaps are corrected before the answer leaves the loop</span></div>
+      <div class="box"><b>Self-hosted embeddings</b><span class="role">embedding inference runs in-tenant; regulated text never leaves; zero per-token cost at 50,000+ documents monthly</span></div>
+    </div>
+  </div>
+
+  <div class="conn"><em>every tool call, retrieval, and code step</em> re-enters the policy plane before it executes; no step runs on ambient authority</div>
+
+  <div class="plane">
+    <div class="plabel">Policy plane<small>runtime enforcement</small></div>
+    <div class="pboxes">
+      <div class="box gate"><b>Sandboxed execution (AST-gated interpreter)</b><span class="role">per-tenant sandbox for user-authored agent code: the AST gate enforces import allowlists, secrets scanning, and runtime limits at parse time and on every execution step; deny by default</span></div>
+      <div class="box gate"><b>Scoped tool entitlements</b><span class="role">the enforcement point for the MCP-compatible registry of 2,500+ tools: entitlements filter what each identity can discover, and scope is re-evaluated at call time</span></div>
+      <div class="box gate"><b>PII control plane</b><span class="role">detection and redaction on agent inputs and outputs; content moderation and safety guardrails on the same path</span></div>
+      <div class="box"><b>Lateral-execution tracking</b><span class="role">tool-to-tool call chains recorded end to end, so delegated authority stays visible and scope cannot silently widen</span></div>
+    </div>
+  </div>
+
+  <div class="conn"><em>model requests</em> leave enforcement with tenant, budget, and residency attributes attached; the gateway enforces what the policy layer decided</div>
+
+  <div class="plane">
+    <div class="plabel">Model plane<small>routing and cost</small></div>
+    <div class="pboxes">
+      <div class="box gate"><b>Platform policy layer</b><span class="role">computes the attribute-based routing decision per tenant: reachable models, budget drawn, residency constraints</span></div>
+      <div class="box"><b>Multi-provider gateway</b><span class="role">enforces the decision through virtual keys, model allowlists, and budgets; routes across self-hosted, fine-tuned, and Bedrock-hosted models</span><span class="tech">LiteLLM</span></div>
+      <div class="box"><b>Token budgeting</b><span class="role">context-window-aware budgeting with per-call cost emission</span></div>
+      <div class="box ext"><b>Amazon Bedrock</b><span class="role">hosted models; regulated tenants pin to private DevX-served models instead for data residency</span></div>
+    </div>
+  </div>
+
+  <div class="conn"><em>every step emits</em> spans, structured logs, per-call costs, and policy decisions to the observability plane</div>
+
+  <div class="plane">
+    <div class="plabel">Observability<small>prove what happened</small></div>
+    <div class="pboxes">
+      <div class="box"><b>Trace collector</b><span class="role">tracing spans agent execution, tool usage, and policy decisions; DSPy autologged; every invocation replayable end to end</span><span class="tech">MLflow, OpenTelemetry</span></div>
+      <div class="box"><b>Structured logs</b><span class="role">structured logging joined to traces for search and audit</span><span class="tech">OpenSearch</span></div>
+      <div class="box gate"><b>Golden-dataset CI gate</b><span class="role">versioned golden datasets score models, agents, and RAG agents in CI; a regressing prompt, model, or tool change is blocked before release</span><span class="tech">MLflow GenAI evaluation</span></div>
+      <div class="box"><b>Online production eval</b><span class="role">a separate loop scoring live production traffic, catching drift the offline gate never sees</span></div>
+      <div class="box"><b>Audit trail</b><span class="role">SOC-aligned, built on the trace, log, and telemetry evidence above: who invoked what, under which entitlement, which policy decided, at what cost</span></div>
+    </div>
+  </div>
+
+  <div class="legend">
+    <span class="k"><span class="sw"></span> platform component</span>
+    <span class="k"><span class="sw gate"></span> enforcement point</span>
+    <span class="k"><span class="sw ext"></span> external system (opaque)</span>
+    <span class="k"><span class="sw plane"></span> plane = one responsibility</span>
+  </div>
+</div>
+
+<h2 class="sec">One invocation under policy</h2>
+<ol class="flow">
+  <li><span><b>Request arrives.</b> <span class="via">Tenant and identity bind at the door; the policy decision point resolves tool entitlements, data boundaries, and model class before any agent work starts.</span></span></li>
+  <li><span><b>The harness plans.</b> <span class="via">ReAct reasons over which governed tools to call; CodeAct composes tool use as code that will only ever run inside the sandbox.</span></span></li>
+  <li><span><b>Every tool call hits an enforcement point.</b> <span class="via">Discovery was already filtered to the identity's entitlements; scope is re-evaluated at call time; the AST gate checks imports, secrets, and runtime limits on every execution step.</span></span></li>
+  <li><span><b>Retrieval runs as a tool.</b> <span class="via">Hybrid BM25 plus kNN retrieval with reciprocal rank fusion and query decomposition pulls evidence from the in-tenant corpus.</span></span></li>
+  <li><span><b>The per-run judge corrects.</b> <span class="via">A per-run judge checks the draft against retrieved evidence, catching hallucinations and false gaps before synthesis completes.</span></span></li>
+  <li><span><b>The gateway routes the model call.</b> <span class="via">The platform policy layer computes the attribute-based decision; LiteLLM enforces it via virtual keys, model allowlists, and budgets; cost is emitted per call.</span></span></li>
+  <li><span><b>Rails on the way in and out.</b> <span class="via">PII detection and redaction plus content moderation run on inputs and outputs; in HIPAA deployments this path is not optional.</span></span></li>
+  <li><span><b>Results stream.</b> <span class="via">SSE for interactive sessions; background workers for long jobs.</span></span></li>
+  <li><span><b>The trace lands.</b> <span class="via">Spans, logs, and telemetry make the invocation replayable; the online production eval scores the live traffic; the audit trail records which policies decided what.</span></span></li>
+</ol>
+
+<h2 class="sec">Key decisions</h2>
+<div class="decisions">
+  <div class="decision">
+    <h3>Authorization decided inside the agent loop, not at the session door</h3>
+    <p><b>Decision:</b> the platform policy layer is the decision point; enforcement points sit at the tool-call boundary inside the agent loop, so the attribute-based decision is recomputed on every invocation rather than minted once at login.</p>
+    <p><b>Alternative considered:</b> a session-scoped grant issued at entry and trusted for the rest of the run.</p>
+    <p><b>Consequence:</b> a prompt-injected or misplanned step hits a deny-by-default wall the moment it reaches for a tool outside its entitlements, and delegation across tool chains cannot silently widen scope. This is the runtime enforcement pattern Cedar-style agentic authorization now formalizes.</p>
+  </div>
+  <div class="decision">
+    <h3>An AST-gated interpreter for semi-trusted code</h3>
+    <p><b>Decision:</b> user-authored agent code runs in a per-tenant sandbox whose interpreter enforces import allowlists, secrets scanning, and runtime limits at parse time and on every execution step.</p>
+    <p><b>Alternative considered:</b> a platform engineer reviews every analyst code change before it can run.</p>
+    <p><b>Consequence:</b> semi-trusted analyst code reaches a live multi-tenant runtime without per-change review; the isolation boundary, not a process document, is what makes that safe. And only artifacts DevX has tested and published can execute at all, so the sandbox is the second gate, not the only one.</p>
+  </div>
+  <div class="decision">
+    <h3>Three eval loops, kept distinct</h3>
+    <p><b>Decision:</b> keep three things separate. The golden-dataset gate scores models, agents, and RAG agents against versioned datasets in CI and blocks regressions before release. The per-run judge is a runtime component inside live RAG agents, correcting each run. Online production eval is a third loop scoring live traffic after release.</p>
+    <p><b>Alternative considered:</b> collapse them: gate on the runtime judge's scores, or test only before release with nothing watching production.</p>
+    <p><b>Consequence:</b> the release gate is reproducible and cheap to rerun; the runtime judge does the per-run correction only it can do; drift that never appeared in the golden set still gets caught in production. Quality has a gate, a corrector, and a heartbeat, and none of them is mistaken for another.</p>
+  </div>
+</div>
+
+<h2 class="sec">The three layers</h2>
+<div class="layers">
+  <div class="layer"><h3>Data layer</h3><p>Hybrid OpenSearch retrieval indexes (BM25 lexical plus kNN vector) and versioned golden datasets over the regulated corpus, fed by DevX's ingestion pipelines (Airflow plus Spark). Self-hosted embeddings keep the corpus in-tenant end to end, with zero per-token cost at 50,000+ documents monthly.</p></div>
+  <div class="layer"><h3>Product layer</h3><p>The DSPy harness, agentic RAG, and the policy plane are the product: agents that analyst teams trust with regulated work because every capability is entitlement-scoped, sandboxed, and traced. Cost is a product surface: budgets, model allowlists, and per-call cost emission are visible to the teams that own the spend.</p></div>
+  <div class="layer"><h3>Deployment layer</h3><p>Per-client multi-tenant deployments in regulated environments, HIPAA included; tenants pin to private models for data residency. Compliance review gets what it asks for: a SOC-aligned audit trail built on the trace, log, and telemetry evidence, with a replayable trace behind every answer.</p></div>
+</div>
+
+<h2 class="sec">Stack</h2>
+<div class="chips">
+  <span class="chip">Python</span><span class="chip">DSPy</span><span class="chip">FastAPI</span><span class="chip">LiteLLM</span>
+  <span class="chip">MLflow</span><span class="chip">OpenTelemetry</span><span class="chip">OpenSearch</span><span class="chip">Bedrock</span>
+  <span class="chip">MCP</span><span class="chip">Redis</span><span class="chip">Docker</span><span class="chip">EvalPlus</span><span class="chip">Guardrails</span>
+</div>
+
+<footer class="foot">
+  <div>Next: <a href="finetuning.html">Fine-Tuning, DevX's model-lifecycle plane that supplies the private models &#8594;</a></div>
+  <div class="terms">
+    ABAC = Attribute-Based Access Control &#183; RBAC = Role-Based Access Control &#183; AST = Abstract Syntax Tree &#183;
+    MCP = Model Context Protocol &#183; RAG = Retrieval-Augmented Generation &#183; SSE = Server-Sent Events &#183;
+    CI = Continuous Integration &#183; PII = Personally Identifiable Information &#183; SOC = System and Organization Controls &#183;
+    kNN = k-Nearest Neighbors &#183; BM25 = Best Match 25 lexical ranking
+  </div>
+</footer>
+
+</div>
+</body>
+</html>

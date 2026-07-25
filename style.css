@@ -1,0 +1,267 @@
+/* Portfolio design system: shared across all pages */
+
+:root {
+  --bg: #fafbfc;
+  --surface: #ffffff;
+  --ink: #1a2330;
+  --muted: #5b6b7e;
+  --line: #d9e0e8;
+  --line-strong: #b9c4d0;
+  --accent: #2563eb;
+  --accent-soft: #eaf1fe;
+  --gate: #b45309;
+  --gate-soft: #fdf3e4;
+  --ext-bg: #f2f5f8;
+  --code-bg: #eef2f6;
+  --devx: #2563eb;
+  --secureexec: #7c3aed;
+  --finetuning: #0f766e;
+  --sentry: #b45309;
+  --shadow: 0 1px 3px rgba(16, 24, 40, 0.08);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e131a;
+    --surface: #161d27;
+    --ink: #e7edf4;
+    --muted: #93a3b5;
+    --line: #2a3543;
+    --line-strong: #3d4b5d;
+    --accent: #5b93f5;
+    --accent-soft: #1a2638;
+    --gate: #e5a458;
+    --gate-soft: #2a2114;
+    --ext-bg: #131a23;
+    --code-bg: #1c2530;
+    --devx: #5b93f5;
+    --secureexec: #a78bfa;
+    --finetuning: #34b3a8;
+    --sentry: #e5a458;
+    --shadow: none;
+  }
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  line-height: 1.55;
+  font-size: 16px;
+}
+
+.wrap { max-width: 1080px; margin: 0 auto; padding: 0 20px 64px; }
+
+/* ---------- Navigation ---------- */
+.nav {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 4px 14px;
+  padding: 14px 0; margin-bottom: 8px;
+  border-bottom: 1px solid var(--line);
+  font-size: 14.5px;
+}
+.nav .namegroup { display: inline-flex; align-items: baseline; gap: 12px; margin-right: auto; }
+.nav .home { font-weight: 700; text-decoration: none; color: var(--ink); }
+.nav .contact { color: var(--muted); text-decoration: none; font-size: 13.5px; }
+.nav .contact:hover { color: var(--accent); }
+.nav .copybtn { font: inherit; font-size: 13.5px; color: var(--muted); background: none; border: none; cursor: pointer; padding: 0; }
+.nav .copybtn:hover { color: var(--accent); }
+.nav .copybtn.done { color: var(--finetuning); }
+.nav a { color: var(--muted); text-decoration: none; padding: 2px 0; }
+.nav a:hover { color: var(--accent); }
+.nav a.active { color: var(--ink); font-weight: 600; border-bottom: 2px solid var(--accent); }
+.nav a.cta {
+  color: var(--accent); font-weight: 600; border: 1px solid var(--accent);
+  border-radius: 6px; padding: 3px 10px;
+}
+
+/* ---------- Page headers ---------- */
+.pagehead { margin: 30px 0 8px; }
+.pagehead h1 { font-size: 30px; letter-spacing: -0.3px; line-height: 1.2; }
+.pagehead .accentbar { display: inline-block; width: 44px; height: 4px; border-radius: 2px; margin-bottom: 10px; background: var(--accent); }
+.scope { color: var(--muted); font-size: 16px; max-width: 72ch; margin-top: 6px; }
+.scope strong { color: var(--ink); }
+
+/* ---------- Metrics strip ---------- */
+.metrics { display: flex; flex-wrap: wrap; gap: 12px; margin: 22px 0 6px; }
+.metric {
+  flex: 1 1 150px; background: var(--surface); border: 1px solid var(--line);
+  border-radius: 10px; padding: 12px 14px; box-shadow: var(--shadow);
+}
+.metric b { display: block; font-size: 21px; letter-spacing: -0.3px; }
+.metric span { color: var(--muted); font-size: 13px; }
+
+/* ---------- Section titles ---------- */
+h2.sec { font-size: 20px; margin: 38px 0 6px; letter-spacing: -0.2px; }
+.secnote { color: var(--muted); font-size: 14.5px; margin-bottom: 14px; max-width: 78ch; }
+
+/* ---------- Architecture diagram primitives ---------- */
+.arch {
+  background: var(--surface); border: 1px solid var(--line); border-radius: 12px;
+  padding: 18px; overflow-x: auto; box-shadow: var(--shadow);
+}
+.arch .dtitle { font-size: 14px; font-weight: 700; margin-bottom: 2px; }
+.arch .dsub { font-size: 12.5px; color: var(--muted); margin-bottom: 14px; }
+
+.plane {
+  display: grid; grid-template-columns: 150px 1fr; gap: 12px;
+  border: 1px solid var(--line); border-left: 4px solid var(--accent);
+  border-radius: 8px; padding: 12px; background: var(--bg);
+}
+.plane + .plane, .conn + .plane, .plane + .conn { margin-top: 0; }
+.plane .plabel { font-size: 12.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.4px; color: var(--muted); padding-top: 4px; }
+.plane .plabel small { display: block; font-weight: 400; text-transform: none; letter-spacing: 0; margin-top: 3px; }
+.pboxes { display: flex; flex-wrap: wrap; gap: 8px; }
+
+.box {
+  background: var(--surface); border: 1px solid var(--line-strong); border-radius: 7px;
+  padding: 8px 10px; font-size: 13px; max-width: 300px; flex: 0 1 auto;
+}
+.box b { display: block; font-size: 13.5px; }
+.box .role { color: var(--muted); display: block; margin-top: 1px; }
+.box .tech { display: inline-block; margin-top: 5px; font-size: 11.5px; background: var(--code-bg); border-radius: 4px; padding: 1px 6px; color: var(--muted); font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+
+.box.gate { border: 1px solid var(--line-strong); border-left: 3px solid var(--gate); background: var(--surface); }
+.box.gate b::after { content: " (enforcement point)"; font-weight: 400; font-size: 11px; color: var(--gate); }
+.box.ext { border: 1.5px dashed var(--line-strong); background: var(--ext-bg); }
+.box.ext b::after { content: " (external)"; font-weight: 400; font-size: 11px; color: var(--muted); }
+
+.conn {
+  display: flex; align-items: baseline; gap: 8px; padding: 6px 6px 6px 40px;
+  color: var(--muted); font-size: 13px;
+}
+.conn::before { content: "▼"; font-size: 11px; color: var(--accent); }
+.conn em { font-style: normal; color: var(--ink); font-weight: 600; }
+
+.legend { display: flex; flex-wrap: wrap; gap: 8px 16px; margin-top: 14px; font-size: 12.5px; color: var(--muted); }
+.legend .k { display: inline-flex; align-items: center; gap: 6px; }
+.legend .sw { width: 22px; height: 14px; border-radius: 4px; display: inline-block; border: 1px solid var(--line-strong); background: var(--surface); }
+.legend .sw.gate { border-left: 3px solid var(--gate); }
+.legend .sw.ext { border: 1px dashed var(--line-strong); background: var(--ext-bg); }
+.legend .sw.plane { border-left: 3px solid var(--accent); }
+
+/* ---------- Numbered lifecycle flow ---------- */
+.flow { counter-reset: step; list-style: none; margin: 14px 0 0; display: grid; gap: 8px; }
+.flow li {
+  counter-increment: step; display: grid; grid-template-columns: 30px 1fr; gap: 10px;
+  background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px;
+  font-size: 14px;
+}
+.flow li::before {
+  content: counter(step); font-weight: 700; color: var(--accent);
+  border: 1.5px solid var(--accent); border-radius: 50%; width: 24px; height: 24px;
+  display: flex; align-items: center; justify-content: center; font-size: 13px; margin-top: 1px;
+}
+.flow li b { font-weight: 600; }
+.flow li .via { color: var(--muted); }
+
+/* ---------- Decision memo cards ---------- */
+.decisions { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); margin-top: 14px; }
+.decision {
+  background: var(--surface); border: 1px solid var(--line); border-left: 4px solid var(--accent);
+  border-radius: 8px; padding: 14px 16px; font-size: 14px;
+}
+.decision h3 { font-size: 14.5px; margin-bottom: 8px; }
+.decision p { margin: 5px 0; color: var(--muted); }
+.decision p b { color: var(--ink); font-weight: 600; }
+
+/* ---------- Layer detail ---------- */
+.layers { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); margin-top: 14px; }
+.layer { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 14px 16px; font-size: 14px; }
+.layer h3 { font-size: 14.5px; margin-bottom: 6px; }
+.layer p { color: var(--muted); }
+
+/* ---------- Chips / stack line ---------- */
+.chips { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 12px; }
+.chip {
+  font-size: 12.5px; border: 1px solid var(--line-strong); border-radius: 999px;
+  padding: 3px 11px; color: var(--muted); background: var(--surface);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+/* ---------- Landing page ---------- */
+.hero { margin: 44px 0 10px; }
+.hero h1 { font-size: 38px; letter-spacing: -0.6px; line-height: 1.15; }
+.hero .tagline { font-size: 18px; color: var(--muted); max-width: 66ch; margin-top: 12px; }
+.hero .tagline strong { color: var(--ink); }
+.hero .links { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; }
+.hero .links a {
+  text-decoration: none; font-size: 14.5px; font-weight: 600; border-radius: 8px; padding: 8px 16px;
+  border: 1px solid var(--line-strong); color: var(--ink);
+}
+.hero .links a.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+.hero .links a:hover { border-color: var(--accent); }
+
+.cards { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); margin: 26px 0 8px; }
+.card {
+  display: block; text-decoration: none; color: var(--ink);
+  background: var(--surface); border: 1px solid var(--line); border-top: 4px solid var(--accent);
+  border-radius: 10px; padding: 16px 18px; box-shadow: var(--shadow);
+}
+.card:hover { border-color: var(--accent); }
+.card .num { font-size: 26px; font-weight: 700; letter-spacing: -0.5px; }
+.card .numlabel { color: var(--muted); font-size: 12.5px; margin-bottom: 10px; }
+.card h3 { font-size: 16px; margin-bottom: 4px; }
+.card p { font-size: 13.5px; color: var(--muted); }
+.card .go { display: block; margin-top: 10px; font-size: 13.5px; font-weight: 600; color: var(--accent); }
+.card.devx { border-top-color: var(--devx); }
+.card.secureexec { border-top-color: var(--secureexec); }
+.card.finetuning { border-top-color: var(--finetuning); }
+.card.sentry { border-top-color: var(--sentry); }
+
+/* Accent variants applied per page via body class */
+body.p-devx .accentbar, body.p-devx .plane { border-left-color: var(--devx); }
+body.p-devx .accentbar { background: var(--devx); }
+body.p-secureexec .accentbar, body.p-secureexec .plane { border-left-color: var(--secureexec); }
+body.p-secureexec .accentbar { background: var(--secureexec); }
+body.p-finetuning .accentbar, body.p-finetuning .plane { border-left-color: var(--finetuning); }
+body.p-finetuning .accentbar { background: var(--finetuning); }
+body.p-sentry .accentbar, body.p-sentry .plane { border-left-color: var(--sentry); }
+body.p-sentry .accentbar { background: var(--sentry); }
+
+/* ---------- Ecosystem diagram (landing) ---------- */
+.eco { display: grid; gap: 10px; }
+.eco .tier {
+  display: grid; grid-template-columns: 150px 1fr; gap: 12px;
+  border: 1px solid var(--line); border-radius: 8px; padding: 12px; background: var(--bg);
+}
+.eco .tier.devx { border-left: 4px solid var(--devx); }
+.eco .tier.secureexec { border-left: 4px solid var(--secureexec); }
+.eco .tier.finetuning { border-left: 4px solid var(--finetuning); }
+.eco .tier.sentry { border-left: 4px solid var(--sentry); }
+.eco .tier.spine { border-left: 4px solid var(--line-strong); }
+.eco .tlabel { font-size: 12.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.4px; color: var(--muted); padding-top: 4px; }
+.eco .tlabel a { color: inherit; }
+.eco .tlabel small { display: block; font-weight: 400; text-transform: none; letter-spacing: 0; margin-top: 3px; }
+
+/* ---------- Footer ---------- */
+.foot {
+  margin-top: 56px; padding-top: 18px; border-top: 1px solid var(--line);
+  color: var(--muted); font-size: 13px;
+}
+.foot .terms { margin-top: 8px; line-height: 1.7; }
+
+/* ---------- Prose helpers ---------- */
+.prose { max-width: 78ch; font-size: 15px; }
+.prose p { margin: 8px 0; }
+.prose .lead { font-size: 16px; }
+
+a { color: var(--accent); }
+
+/* ---------- Print ---------- */
+@media print {
+  body { background: #fff; color: #111; font-size: 12px; }
+  .nav, .hero .links, .card .go { display: none; }
+  .arch, .metric, .decision, .layer, .flow li, .card { box-shadow: none; break-inside: avoid; }
+  .wrap { max-width: none; padding: 0; }
+}
+
+@media (max-width: 640px) {
+  .plane, .eco .tier { grid-template-columns: 1fr; }
+  .plane .plabel, .eco .tlabel { padding-top: 0; }
+  .hero h1 { font-size: 30px; }
+  .conn { padding-left: 12px; }
+}

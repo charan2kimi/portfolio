@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DevX Architecture | Charan Lingamgunta</title>
+<meta name="description" content="DevX developer experience platform: MCP tool registry with least-privilege entitlements and permission-filtered discovery, self-authoring with sandbox and eval gates, silo-model multi-tenancy, and gated publication into the agent runtime.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%232563eb'/><text x='50' y='68' font-size='52' text-anchor='middle' fill='white' font-family='Arial'>CL</text></svg>">
+<link rel="stylesheet" href="style.css">
+</head>
+<body class="p-devx">
+<div class="wrap">
+
+<nav class="nav">
+  <span class="namegroup">
+    <a class="home" href="index.html">Charan Lingamgunta</a>
+    <a class="contact" href="https://linkedin.com/in/charan-lingamgunta">LinkedIn</a>
+    <button class="copybtn" type="button" onclick="navigator.clipboard.writeText('charan.lingamgunta@gmail.com');this.textContent='Copied';this.classList.add('done');setTimeout(()=>{this.textContent='Email';this.classList.remove('done');},1200)">Email</button>
+  </span>
+  <a href="index.html">Overview</a>
+  <a class="active" href="devx.html">DevX</a>
+  <a href="agent-execution.html">Agent Execution</a>
+  <a href="finetuning.html">Fine-Tuning</a>
+  <a href="sentry.html">Sentry</a>
+  <a class="cta" href="resume.pdf">Resume (PDF)</a>
+</nav>
+
+<header class="pagehead">
+  <span class="accentbar"></span>
+  <h1>DevX, Developer Experience Platform</h1>
+  <p class="scope">
+    <strong>Container-level view: the umbrella developer platform.</strong> An API devportal, agent and tool
+    authoring with test, publish, and audit, LLMOps and evaluation, and the full model lifecycle (fine-tuning,
+    model registry, serving, and monitoring, detailed on the <a href="finetuning.html">Fine-Tuning</a> page),
+    over one governance overlay where least-privilege entitlements decide what each identity can discover and
+    invoke. Largest single deployment: 200+ engineers and 1,000+ Application Programming Interfaces (APIs)
+    converted into governed Model Context Protocol (MCP) tools. Jan 2022 to present.
+  </p>
+</header>
+
+<section class="metrics">
+  <div class="metric"><b>1,000+</b><span>client API specifications converted by pipeline, review queue removed</span></div>
+  <div class="metric"><b>2,500+</b><span>governed MCP-compatible tools in the registry</span></div>
+  <div class="metric"><b>200+</b><span>engineers on the largest single deployment</span></div>
+  <div class="metric"><b>0</b><span>artifacts reach the runtime without passing sandbox tests</span></div>
+</section>
+
+<h2 class="sec">Architecture</h2>
+<p class="secnote">
+  Five planes in lifecycle order, plus the ingestion wing that feeds retrieval and datasets. Everything a user
+  builds passes through the same path: author, evaluate, govern, publish. Nothing skips the gates.
+</p>
+
+<div class="arch">
+  <div class="dtitle">DevX, container-level, authoring-to-publication path</div>
+  <div class="dsub">MCP = Model Context Protocol. Read top to bottom; connectors name the contract between planes.</div>
+
+  <div class="plane">
+    <div class="plabel">Portal<small>discovery + operations</small></div>
+    <div class="pboxes">
+      <div class="box"><b>Catalog + discovery</b><span class="role">the single source of truth for the client's API estate: unified API discovery, dependency mapping, deployment visibility, and operational metadata in one catalog</span><span class="tech">Backstage</span></div>
+      <div class="box gate"><b>Portal permissions</b><span class="role">policy-as-code: every portal action passes through a permission policy that returns an allow, deny, or conditional decision, and the plugin that owns the resource enforces it; Role-Based Access Control (RBAC) governs portal actions</span><span class="tech">Backstage permission framework</span></div>
+      <div class="box ext"><b>Okta / GitHub / local identity</b><span class="role">the identity source of record: every portal and publish action executes as an authenticated identity</span></div>
+    </div>
+  </div>
+
+  <div class="conn"><em>authenticated identity with resolved entitlements:</em> every action below runs as an identity whose scoped entitlements are known before it acts, and entity-level permissions attach to artifacts at creation</div>
+
+  <div class="plane">
+    <div class="plabel">Authoring<small>humans + pipeline</small></div>
+    <div class="pboxes">
+      <div class="box"><b>OpenAPI-to-tool pipeline</b><span class="role">mechanically converts client API specifications into typed, MCP-compatible tool definitions; the migration machine that turned 1,000+ specs into 2,500+ tools and removed the review queue from the publication path</span><span class="tech">Python</span></div>
+      <div class="box"><b>Self-authoring editor</b><span class="role">analysts write custom tools against a curated allowlist of Python libraries; the only route to publication runs through the sandbox and evaluation gates below</span><span class="tech">Monaco</span></div>
+      <div class="box"><b>Agent authoring</b><span class="role">DSPy-compatible agents composed over cataloged tools, so agents inherit the entitlements and audit hooks the tools already carry</span><span class="tech">DSPy</span></div>
+    </div>
+  </div>
+
+  <div class="conn"><em>candidate artifact:</em> a tool, agent, or retrieval pipeline submitted for evaluation, with no route to the registry except through the gates</div>
+
+  <div class="plane">
+    <div class="plabel">Evaluation<small>before anything ships</small></div>
+    <div class="pboxes">
+      <div class="box gate"><b>Sandbox invoke + test</b><span class="role">every artifact executes against its tests in an isolated sandbox; passing is the precondition for publication, not a recommendation</span></div>
+      <div class="box"><b>Versioned golden datasets</b><span class="role">pinned evaluation sets for both regular agents and Retrieval-Augmented Generation (RAG) agents; a score always names the dataset version it was earned against</span></div>
+      <div class="box"><b>Agent + retrieval evals</b><span class="role">agent and retrieval quality scored against the golden datasets before anything publishes</span><span class="tech">MLflow GenAI evaluation</span></div>
+      <div class="box"><b>Code-correctness checks</b><span class="role">test-amplified correctness evaluation for authored tool code, catching failures the author's own tests miss</span><span class="tech">EvalPlus</span></div>
+      <div class="box"><b>Prompt compilation</b><span class="role">a signature plus a golden dataset and metric compile once into an optimized artifact, the tuned instruction and few-shot demonstrations, then reused across every agent invocation with no runtime tuning</span><span class="tech">DSPy optimizers</span></div>
+    </div>
+  </div>
+
+  <div class="conn"><em>green evals</em> unlock governance binding; red evals block publication and return replayable failure detail</div>
+
+  <div class="plane">
+    <div class="plabel">Governance<small>policy enforcement points</small></div>
+    <div class="pboxes">
+      <div class="box gate"><b>Least-privilege tool entitlements</b><span class="role">each identity carries scoped entitlements that determine which tools it can even discover and which it can invoke; discovery is permission-filtered before invocation is ever attempted, so a tool an identity is not entitled to is never advertised to it: deny by default, explicit grant to see or call anything</span></div>
+      <div class="box gate"><b>Tenant isolation, silo model</b><span class="role">enterprise tenants are siloed, not pooled: client-specific plugins, per-client deployments, and domain isolation form each client's dedicated boundary, and entity-level RBAC polices publication and access inside it</span></div>
+      <div class="box"><b>Rate limits</b><span class="role">per-tool and per-identity invocation quotas, enforced by the platform rather than promised in documentation</span></div>
+      <div class="box"><b>SOC-aligned audit</b><span class="role">System and Organization Controls (SOC) aligned evidence trail: who published, who discovered, who invoked, under which entitlement, when; backed by MLflow tracing, OpenSearch structured logging, and OpenTelemetry instrumentation</span><span class="tech">MLflow + OpenSearch + OpenTelemetry</span></div>
+    </div>
+  </div>
+
+  <div class="conn"><em>gated publish:</em> a versioned artifact lands in the live registry only with entitlements, tenant boundary, quotas, and audit hooks (MLflow, OpenSearch, OpenTelemetry) bound</div>
+
+  <div class="plane">
+    <div class="plabel">Publication<small>into the runtime</small></div>
+    <div class="pboxes">
+      <div class="box"><b>Governed registry</b><span class="role">the system of record for 2,500+ tools, agents, and RAG pipelines, all versioned; discovery is permission-filtered, so each identity sees only the slice of the catalog its entitlements allow</span><span class="tech">MCP servers</span></div>
+      <div class="box"><b>Runtime handoff</b><span class="role">published artifacts become invocable in the Agent Execution Platform, the realtime runtime; both expose MCP servers, so the handoff contract is the protocol itself</span><span class="tech">MCP</span></div>
+    </div>
+  </div>
+
+  <div class="conn"><em>runs alongside the lifecycle:</em> the ingestion wing keeps retrieval indexes and versioned datasets fresh for the artifacts above</div>
+
+  <div class="plane">
+    <div class="plabel">Ingestion wing<small>data in</small></div>
+    <div class="pboxes">
+      <div class="box"><b>Sources</b><span class="role">file uploads, streaming from APIs, and queue consumers</span></div>
+      <div class="box"><b>Pipeline orchestration</b><span class="role">scheduled and event-driven Directed Acyclic Graphs (DAGs) with Spark processing steps</span><span class="tech">Airflow + Spark</span></div>
+      <div class="box"><b>Hybrid retrieval indexes</b><span class="role">lexical plus vector retrieval in one index: Best Match 25 (BM25) ranking alongside k-Nearest Neighbors (kNN) vector search</span><span class="tech">OpenSearch</span></div>
+      <div class="box"><b>Versioned datasets</b><span class="role">dataset versions cut for fine-tuning, evals, and agent use cases, so every consumer agrees on what the data was at any point in time</span></div>
+    </div>
+  </div>
+
+  <div class="legend">
+    <span class="k"><span class="sw"></span> platform component</span>
+    <span class="k"><span class="sw gate"></span> enforcement point</span>
+    <span class="k"><span class="sw ext"></span> external system (opaque)</span>
+    <span class="k"><span class="sw plane"></span> plane = one lifecycle stage</span>
+  </div>
+</div>
+
+<h2 class="sec">One tool's journey: client API to governed invocation</h2>
+<ol class="flow">
+  <li><span><b>Import or author.</b> <span class="via">A client's OpenAPI specification enters the conversion pipeline, or an analyst writes a custom tool in the Monaco editor against the curated Python library allowlist.</span></span></li>
+  <li><span><b>Generate.</b> <span class="via">The pipeline emits a typed, MCP-compatible tool definition. 1,000+ specifications became 2,500+ tools this way, with governed self-service replacing the review queue that used to gate publication.</span></span></li>
+  <li><span><b>Evaluate in sandbox.</b> <span class="via">The artifact runs against its tests in isolation. EvalPlus scores code correctness, and MLflow GenAI evaluation scores agent and retrieval quality against versioned golden datasets.</span></span></li>
+  <li><span><b>Bind governance.</b> <span class="via">Scoped entitlements, the tenant boundary, entity-level RBAC, rate limits, and audit instrumentation (MLflow tracing, OpenSearch structured logging, OpenTelemetry) bind to the artifact itself at publish time, not to documentation about it.</span></span></li>
+  <li><span><b>Publish on green.</b> <span class="via">Only passing artifacts version into the live registry. Failing artifacts return to the author with replayable failure detail.</span></span></li>
+  <li><span><b>Discover, filtered.</b> <span class="via">Discovery is a governed operation, not a public metadata endpoint. An identity is shown only the tools its entitlements allow, so unauthorized tools are invisible before invocation is ever attempted.</span></span></li>
+  <li><span><b>Invoke under policy.</b> <span class="via">The Agent Execution Platform executes the tool inside agent workflows, re-authorizing the entitlement on every call and writing each one into the SOC-aligned audit trail.</span></span></li>
+</ol>
+
+<h2 class="sec">Key decisions</h2>
+<div class="decisions">
+  <div class="decision">
+    <h3>Convert APIs by pipeline, not by hand</h3>
+    <p><b>Decision:</b> build an OpenAPI-to-tool pipeline so client APIs become governed MCP tools mechanically, with the same typing, entitlements, and audit hooks stamped onto every one.</p>
+    <p><b>Alternative considered:</b> hand-written tool wrappers behind a platform review queue, one ticket per API.</p>
+    <p><b>Consequence:</b> the review-queue bottleneck disappeared: 1,000+ API specifications became 2,500+ governed tools through one abstraction, and every new client inherits the paved road instead of re-solving it.</p>
+  </div>
+  <div class="decision">
+    <h3>Gated publish, not open registry</h3>
+    <p><b>Decision:</b> publication is a privilege the evaluation plane grants: an artifact reaches the registry only after sandboxed tests, EvalPlus code-correctness checks, and golden-dataset evals pass.</p>
+    <p><b>Alternative considered:</b> open publishing with post-hoc review and takedowns.</p>
+    <p><b>Consequence:</b> the runtime only ever executes pre-tested artifacts, which is what makes analyst self-authoring safe to offer at all: the guardrail is automated, so trust does not depend on a human approval queue.</p>
+  </div>
+  <div class="decision">
+    <h3>Silo enterprise tenants, do not pool them</h3>
+    <p><b>Decision:</b> isolate enterprise clients on the silo model: client-specific plugins, per-client deployments, and domain isolation form the tenant boundary, entity-level RBAC polices access inside it, and rollout phases per client as their governance requires.</p>
+    <p><b>Alternative considered:</b> a pooled deployment: one shared stack for every tenant with logical, row-level separation.</p>
+    <p><b>Consequence:</b> cross-tenant access is precluded by the deployment boundary instead of policed by application code, the blast radius of any change is one client, and regulated healthcare and financial services clients audit a boundary they can see.</p>
+  </div>
+</div>
+
+<h2 class="sec">The three layers</h2>
+<div class="layers">
+  <div class="layer"><h3>Data layer</h3><p>Airflow DAGs with Spark processing steps ingest from file uploads, API streams, and queue consumers into hybrid OpenSearch indexes (BM25 lexical ranking plus kNN vector search) and versioned datasets. The same pinned dataset versions feed fine-tuning, evals, and agent use cases, so every consumer agrees on what the data was at any point in time.</p></div>
+  <div class="layer"><h3>Product layer</h3><p>A Backstage-based portal is the single source of truth for the API estate: unified discovery, dependency mapping, deployment visibility, operational metadata. The authoring surfaces (pipeline conversion, Monaco self-authoring, DSPy agent composition) sit beside the evaluation and governance planes that decide what ships, so the paved road from authored to published is the only road.</p></div>
+  <div class="layer"><h3>Deployment layer</h3><p>Multi-tenancy runs on the silo model: client-specific plugins, per-client deployments, and domain isolation give each enterprise client a dedicated tenant boundary, with Okta, GitHub, or local identity integration and entity-level permissions operating inside it. Rollouts phase per client as their compliance posture requires, and governance configuration deploys with the artifact, not as an afterthought. The SOC-aligned audit trail is the evidence it held: MLflow traces, OpenSearch structured logs, OpenTelemetry instrumentation.</p></div>
+</div>
+
+<h2 class="sec">Stack</h2>
+<div class="chips">
+  <span class="chip">Python</span><span class="chip">TypeScript</span><span class="chip">Backstage</span><span class="chip">React</span>
+  <span class="chip">FastAPI</span><span class="chip">MCP</span><span class="chip">DSPy</span><span class="chip">MLflow</span>
+  <span class="chip">EvalPlus</span><span class="chip">Airflow</span><span class="chip">Spark</span><span class="chip">OpenSearch</span>
+  <span class="chip">OpenTelemetry</span><span class="chip">Okta</span><span class="chip">Docker</span><span class="chip">AWS</span>
+</div>
+
+<footer class="foot">
+  <div>Next: <a href="agent-execution.html">the Agent Execution Platform, the runtime that executes what DevX publishes &#8594;</a></div>
+  <div class="terms">
+    MCP = Model Context Protocol &#183; RBAC = Role-Based Access Control &#183; RAG = Retrieval-Augmented Generation &#183;
+    DAG = Directed Acyclic Graph &#183; SOC = System and Organization Controls &#183; kNN = k-Nearest Neighbors &#183;
+    BM25 = Best Match 25 lexical ranking &#183; AWS = Amazon Web Services
+  </div>
+</footer>
+
+</div>
+</body>
+</html>

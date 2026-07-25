@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DevX Fine-Tuning Architecture | Charan Lingamgunta</title>
+<meta name="description" content="DevX Fine-Tuning platform architecture: versioned datasets, SFT via PEFT/LoRA with gradient checkpointing, SkyPilot spot orchestration with Ray, checkpoint steering (pause, eval, resume, replay), a judged CI gate, and vLLM serving.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%232563eb'/><text x='50' y='68' font-size='52' text-anchor='middle' fill='white' font-family='Arial'>CL</text></svg>">
+<link rel="stylesheet" href="style.css">
+</head>
+<body class="p-finetuning">
+<div class="wrap">
+
+<nav class="nav">
+  <span class="namegroup">
+    <a class="home" href="index.html">Charan Lingamgunta</a>
+    <a class="contact" href="https://linkedin.com/in/charan-lingamgunta">LinkedIn</a>
+    <button class="copybtn" type="button" onclick="navigator.clipboard.writeText('charan.lingamgunta@gmail.com');this.textContent='Copied';this.classList.add('done');setTimeout(()=>{this.textContent='Email';this.classList.remove('done');},1200)">Email</button>
+  </span>
+  <a href="index.html">Overview</a>
+  <a href="devx.html">DevX</a>
+  <a href="agent-execution.html">Agent Execution</a>
+  <a class="active" href="finetuning.html">Fine-Tuning</a>
+  <a href="sentry.html">Sentry</a>
+  <a class="cta" href="resume.pdf">Resume (PDF)</a>
+</nav>
+
+<header class="pagehead">
+  <span class="accentbar"></span>
+  <h1>DevX Fine-Tuning, LLM Fine-Tuning and Deployment Platform</h1>
+  <p class="scope">
+    <strong>DevX's model-lifecycle plane: dataset to deployed model.</strong>
+    Versioned datasets, Supervised Fine-Tuning (SFT) with Low-Rank Adaptation (LoRA) adapters on cross-cloud spot
+    GPUs with checkpoint steering, a judged Continuous Integration (CI) gate, and vLLM serving; behind 20+
+    production fine-tuned models at enterprise clients. Jan 2023 to Jun 2025.
+  </p>
+</header>
+
+<section class="metrics">
+  <div class="metric"><b>20+</b><span>production fine-tuned models at enterprise clients</span></div>
+  <div class="metric"><b>2</b><span>clouds for spot training: AWS + GCP</span></div>
+  <div class="metric"><b>100%</b><span>of models approved through the judge plus human CI gate</span></div>
+  <div class="metric"><b>Full</b><span>lineage: dataset version to run to model version to deployment</span></div>
+</section>
+
+<h2 class="sec">Architecture</h2>
+<p class="secnote">
+  Five planes in time order. Data is versioned before anything trains; training is engineered for spot economics;
+  the checkpoint lifecycle turns every run into a steerable artifact; the gate approves; deployment serves and
+  observes. The dataset versioning here is the same system that feeds evals and agent use cases in DevX and
+  the Agent Execution Platform, so training, evaluation, and runtime agree on the data.
+</p>
+
+<div class="arch">
+  <div class="dtitle">DevX Fine-Tuning, pipeline-level, dataset-to-deployment path</div>
+  <div class="dsub">Read top to bottom; connectors name what moves between stages.</div>
+
+  <div class="plane">
+    <div class="plabel">Data<small>versioned in</small></div>
+    <div class="pboxes">
+      <div class="box"><b>Sources</b><span class="role">file uploads, streaming Application Programming Interface (API) feeds, and queue consumers deliver Excel and JSON (JavaScript Object Notation) corpora</span></div>
+      <div class="box"><b>Preprocessing pipelines</b><span class="role">Airflow Directed Acyclic Graphs (DAGs) run Spark processing; repeatable preprocessing with reproducible train / validation / test splits</span><span class="tech">Airflow + Spark</span></div>
+      <div class="box gate"><b>Versioned dataset store</b><span class="role">every training set and eval set is a numbered version; the same versions feed fine-tuning, evals, and agent use cases</span></div>
+    </div>
+  </div>
+
+  <div class="conn"><em>a pinned dataset version</em> enters training; the version ID follows the model for life</div>
+
+  <div class="plane">
+    <div class="plabel">Train<small>SFT on spot GPUs</small></div>
+    <div class="pboxes">
+      <div class="box ext"><b>Hugging Face hub</b><span class="role">base models onboarded through one workflow</span></div>
+      <div class="box"><b>SFT via PEFT / LoRA adapters</b><span class="role">supervised training on labeled prompt-response pairs with next-token loss; base weights stay frozen while small low-rank adapter matrices train</span><span class="tech">PyTorch, Hugging Face</span></div>
+      <div class="box"><b>Gradient checkpointing</b><span class="role">the forward pass saves only each checkpointed block's inputs; the backward pass recomputes intermediate activations by rerunning the block, trading extra compute for the activation memory that fits larger models and batches per GPU</span><span class="tech">PyTorch</span></div>
+      <div class="box"><b>Distributed training</b><span class="role">the training loop replicates across GPU workers; crashed workers restart in place, and lost nodes are replaced with training recovered from the most recent checkpoint</span><span class="tech">Ray Train</span></div>
+      <div class="box"><b>Spot orchestration</b><span class="role">jobs placed on the cheapest available spot capacity across AWS and GCP; on preemption the orchestrator provisions replacement capacity, in another region or cloud when needed, and the job reloads its latest checkpoint</span><span class="tech">SkyPilot</span></div>
+      <div class="box"><b>Compute registry</b><span class="role">registered hardware and cloud compute targets define where training jobs and serving may land</span></div>
+    </div>
+  </div>
+
+  <div class="conn"><em>every run streams metrics and writes checkpoints;</em> full training state persists to durable cloud storage, off the node that can be preempted</div>
+
+  <div class="plane">
+    <div class="plabel">Steer<small>the checkpoint lifecycle</small></div>
+    <div class="pboxes">
+      <div class="box"><b>Live training metrics</b><span class="role">loss and eval curves stream from running jobs while they train; progress and failures surface in real time, not post-mortem</span><span class="tech">MLflow</span></div>
+      <div class="box"><b>Checkpoint store</b><span class="role">full training state written at intervals to durable cloud storage: adapter weights, optimizer state, learning-rate schedule, and random state; it survives any single node</span></div>
+      <div class="box"><b>Pause / resume / replay</b><span class="role">any run can be paused at a checkpoint, inspected, resumed where it stopped, or replayed from any earlier checkpoint; spot preemption recovery rides the same path</span></div>
+      <div class="box"><b>Mid-training checkpoint evals</b><span class="role">score any checkpoint against a pinned versioned eval dataset before spending more GPU hours; the result decides continue, stop, or branch</span></div>
+    </div>
+  </div>
+
+  <div class="conn"><em>candidate checkpoints and their runs</em> land in experiment tracking, pinned to the dataset versions they trained and scored on</div>
+
+  <div class="plane">
+    <div class="plabel">Gate<small>no model ships on metrics alone</small></div>
+    <div class="pboxes">
+      <div class="box"><b>Experiment tracking</b><span class="role">runs compared across dataset versions, hyperparameters, and base models; every metric traceable to the run that produced it</span><span class="tech">MLflow</span></div>
+      <div class="box"><b>Versioned eval sets</b><span class="role">release evals score against the same pinned dataset versions used mid-training, so comparisons stay honest across runs</span></div>
+      <div class="box gate"><b>CI gate</b><span class="role">LLM-as-judge scoring plus human review approve every model, run as the CI gate; nothing deploys on metrics alone</span></div>
+    </div>
+  </div>
+
+  <div class="conn"><em>an approved model version</em> moves to the registry and serving; rejected runs stay comparable, not deployed</div>
+
+  <div class="plane">
+    <div class="plabel">Deploy<small>serve + observe</small></div>
+    <div class="pboxes">
+      <div class="box"><b>Model registry</b><span class="role">approved runs register as numbered model versions carrying dataset, run, and approval lineage</span><span class="tech">MLflow</span></div>
+      <div class="box"><b>GPU serving</b><span class="role">production inference with paged key-value (KV) cache management and continuous batching keeping GPUs saturated across concurrent requests</span><span class="tech">vLLM</span></div>
+      <div class="box"><b>Runtime gateway registration</b><span class="role">served models become tenant-pinnable private models in the Agent Execution Platform's LiteLLM gateway</span></div>
+      <div class="box"><b>Behavior monitoring</b><span class="role">training and production behavior monitored side by side, with OpenTelemetry instrumentation platform-wide</span><span class="tech">OpenSearch</span></div>
+    </div>
+  </div>
+
+  <div class="legend">
+    <span class="k"><span class="sw"></span> platform component</span>
+    <span class="k"><span class="sw gate"></span> enforcement point</span>
+    <span class="k"><span class="sw ext"></span> external system (opaque)</span>
+    <span class="k"><span class="sw plane"></span> plane = one pipeline stage</span>
+  </div>
+</div>
+
+<h2 class="sec">Dataset to production model</h2>
+<ol class="flow">
+  <li><span><b>A corpus lands.</b> <span class="via">Upload, API stream, or queue consumer; Airflow DAGs run Spark preprocessing into clean records.</span></span></li>
+  <li><span><b>A dataset version is cut.</b> <span class="via">Reproducible train / validation / test splits under a numbered version that training, evals, and agent use cases all reference.</span></span></li>
+  <li><span><b>Training launches.</b> <span class="via">One workflow onboards the Hugging Face base model and starts SFT as PEFT / LoRA jobs: base weights frozen, low-rank adapters training. SkyPilot places the job on the cheapest spot GPU capacity across AWS and GCP from the compute registry; Ray Train replicates the training loop across provisioned workers.</span></span></li>
+  <li><span><b>Memory is engineered, not hoped for.</b> <span class="via">Gradient checkpointing keeps only each block's inputs during the forward pass and recomputes intermediate activations during backward, buying the activation memory that fits larger models and batches on the same GPUs.</span></span></li>
+  <li><span><b>The run reports while it trains.</b> <span class="via">Loss and eval metrics stream live into MLflow; checkpoints capture adapter weights, optimizer state, learning-rate schedule, and random state to durable storage at intervals.</span></span></li>
+  <li><span><b>Pause.</b> <span class="via">An operator halts the run at its latest checkpoint. Nothing is lost; the run becomes an inspectable artifact instead of a moving target.</span></span></li>
+  <li><span><b>Inspect and evaluate the checkpoint.</b> <span class="via">The paused checkpoint is scored against a pinned versioned eval dataset, the same versions the release gate will use, before more GPU hours are committed.</span></span></li>
+  <li><span><b>Resume, branch, or stop.</b> <span class="via">Continue from the latest checkpoint, replay from any earlier one to branch a new run, or kill the run on the evidence. Spot preemption triggers the same machinery: SkyPilot provisions replacement capacity and the job reloads its latest checkpoint.</span></span></li>
+  <li><span><b>The CI gate decides.</b> <span class="via">MLflow compares surviving candidates across runs; LLM-as-judge scoring plus human review approve or reject every model. Nothing deploys on metrics alone.</span></span></li>
+  <li><span><b>Registry, serving, agent platform.</b> <span class="via">Approved versions register with full lineage, dataset version to run to model version to deployment, then serve on GPU-backed vLLM and register into the Agent Execution Platform's LiteLLM gateway as tenant-pinnable private models, monitored in OpenSearch beside their training history.</span></span></li>
+</ol>
+
+<h2 class="sec">Key decisions</h2>
+<div class="decisions">
+  <div class="decision">
+    <h3>Spot capacity with checkpoint recovery, not on-demand fleets</h3>
+    <p><b>Decision:</b> orchestrate training onto spot GPU capacity across AWS and GCP with SkyPilot; every job writes checkpoints to durable cloud storage, and on preemption the orchestrator provisions replacement capacity, in another region or cloud when needed, and the job resumes from its latest checkpoint.</p>
+    <p><b>Alternative considered:</b> reserved or on-demand GPU fleets, paying a premium for capacity that cannot be reclaimed.</p>
+    <p><b>Consequence:</b> training cost dropped enough to make 20+ per-client production models economically routine. The price was disciplined checkpointing, and that discipline became a product feature: the same checkpoints that survive preemption power pause, resume, and replay.</p>
+  </div>
+  <div class="decision">
+    <h3>Adapters, not full-parameter fine-tunes</h3>
+    <p><b>Decision:</b> run SFT through PEFT with LoRA adapters: base weights stay frozen while small low-rank matrices train and ship as the per-client artifact.</p>
+    <p><b>Alternative considered:</b> full-parameter fine-tuning per client.</p>
+    <p><b>Consequence:</b> per-client models became tractable in GPU memory and storage: one base plus small adapters, trained on smaller capacity, iterated faster. Paired with gradient checkpointing, the same spot hardware stretched to larger models and batches.</p>
+  </div>
+  <div class="decision">
+    <h3>Checkpoints as a control surface, not crash insurance</h3>
+    <p><b>Decision:</b> expose pause, inspection, mid-training evals against versioned datasets, and resume or replay from any checkpoint as first-class operations on every run.</p>
+    <p><b>Alternative considered:</b> checkpoints as an internal fault-tolerance detail, written on schedule and touched only by automated recovery.</p>
+    <p><b>Consequence:</b> bad runs die at the first failing checkpoint eval instead of burning GPU hours to completion; promising runs branch from a known-good checkpoint; and because steering and recovery share one mechanism, spot preemption became a non-event.</p>
+  </div>
+  <div class="decision">
+    <h3>Judge plus human as the CI gate</h3>
+    <p><b>Decision:</b> run LLM-as-judge scoring plus human review as the CI gate on every model; nothing deploys on metrics alone.</p>
+    <p><b>Alternative considered:</b> automated metric thresholds alone.</p>
+    <p><b>Consequence:</b> regulated clients get a defensible release trail, scores plus a named human approval, and judge blind spots do not ship silently. The gate scores against the same versioned eval datasets used mid-training, so a model is approved on the evidence that steered it.</p>
+  </div>
+</div>
+
+<h2 class="sec">The three layers</h2>
+<div class="layers">
+  <div class="layer"><h3>Data layer</h3><p>Versioned datasets are the spine. Airflow DAGs with Spark processing turn file uploads, API streams, and queue-fed Excel and JSON corpora into numbered dataset versions with reproducible train / validation / test splits. The same versions serve fine-tuning, mid-training checkpoint evals, release evals, and agent use cases, so every consumer scores against identical data by version ID.</p></div>
+  <div class="layer"><h3>Product layer</h3><p>One workflow from Hugging Face base model onboarding through SFT launch, live metrics, checkpoint steering, comparison in MLflow, and the judged release gate. A domain team produces a governed model without owning GPUs or orchestration; pausing a run, scoring a checkpoint, and branching from it are product operations, not infrastructure surgery.</p></div>
+  <div class="layer"><h3>Deployment layer</h3><p>Registered hardware and cloud compute targets define placement for training and serving. vLLM serves approved models on GPU; each registers into the Agent Execution Platform's LiteLLM gateway as a tenant-pinnable private model. Audit rides MLflow tracking plus OpenSearch logging, with OpenTelemetry instrumentation platform-wide: full lineage from dataset version to run to model version to deployment.</p></div>
+</div>
+
+<h2 class="sec">Stack</h2>
+<div class="chips">
+  <span class="chip">Python</span><span class="chip">PyTorch</span><span class="chip">Hugging Face</span><span class="chip">PEFT / LoRA</span>
+  <span class="chip">SkyPilot</span><span class="chip">Ray</span><span class="chip">MLflow</span><span class="chip">vLLM</span>
+  <span class="chip">Airflow</span><span class="chip">Spark</span><span class="chip">OpenSearch</span><span class="chip">OpenTelemetry</span>
+  <span class="chip">AWS</span><span class="chip">GCP</span><span class="chip">CUDA</span>
+</div>
+
+<footer class="foot">
+  <div>Next: <a href="sentry.html">Forum Sentry, the decade of gateway engineering underneath all of this &#8594;</a></div>
+  <div class="terms">
+    SFT = Supervised Fine-Tuning &#183; PEFT = Parameter-Efficient Fine-Tuning &#183; LoRA = Low-Rank Adaptation &#183;
+    DAG = Directed Acyclic Graph &#183; KV = key-value &#183; CI = Continuous Integration &#183; GPU = Graphics Processing Unit
+  </div>
+</footer>
+
+</div>
+</body>
+</html>
