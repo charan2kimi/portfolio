@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Forum Sentry Architecture | Charan Lingamgunta</title>
-<meta name="description" content="Forum Sentry enterprise API security gateway: 10B+ transactions daily through a zero-copy streaming pipeline, three-tier WAF and O(1) intrusion-detection sensors, an 11-method identity broker, XML-DSig and PKIX document security, a 200+ policy-type engine, and 99.99% uptime engineering.">
+<meta name="description" content="Forum Sentry, enterprise API gateway and builder: a 4-stage bidirectional streaming pipeline carrying 10B+ transactions a day in aggregate, multi-tier caching with request coalescing, a no-code API builder, active-passive failover at 99.99% uptime, and an 11-method authentication subsystem.">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%232563eb'/><text x='50' y='68' font-size='52' text-anchor='middle' fill='white' font-family='Arial'>CL</text></svg>">
 <link rel="stylesheet" href="style.css">
 </head>
@@ -18,8 +18,8 @@
     <button class="copybtn" type="button" onclick="navigator.clipboard.writeText('charan.lingamgunta@gmail.com');this.textContent='Copied';this.classList.add('done');setTimeout(()=>{this.textContent='Email';this.classList.remove('done');},1200)">Email</button>
   </span>
   <a href="index.html">Overview</a>
+  <a href="securegpt.html">SecureGPT</a>
   <a href="devx.html">DevX</a>
-  <a href="agent-execution.html">Agent Execution</a>
   <a href="finetuning.html">Fine-Tuning</a>
   <a class="active" href="sentry.html">Sentry</a>
   <a class="cta" href="resume.pdf">Resume (PDF)</a>
@@ -27,30 +27,30 @@
 
 <header class="pagehead">
   <span class="accentbar"></span>
-  <h1>Forum Sentry, Enterprise API Security Gateway</h1>
+  <h1>Forum Sentry, Enterprise API Gateway and Builder</h1>
   <p class="scope">
-    <strong>Container-level view: one bidirectional streaming data path, with threat defense, identity, document
-    security, policy, delivery, and observability wrapped around it as independent planes.</strong>
-    Seven years (2014-2021) building the gateway carrying 10B+ transactions daily for financial and government
-    workloads against 99.99% uptime targets. This is where the governance, identity brokering, and
-    latency-attribution DNA of the three AI platforms comes from.
+    <strong>Container-level view: one bidirectional streaming data path, with threat defense, identity, message
+    security, policy, and delivery wrapped around it.</strong> Seven years (2014 to 2021) on the
+    gateway carrying 10B+ transactions a day, in aggregate across customer deployments, for financial and government
+    workloads at 99.99% uptime. Five pieces are mine to defend in depth: the streaming pipeline, the caching tier,
+    the no-code API builder, the failover design, and the authentication subsystem. The rest is the product they
+    live in, shown for context. This is where the streaming, caching, failover, and identity instincts of the AI
+    stack come from.
   </p>
 </header>
 
 <section class="metrics">
-  <div class="metric"><b>10B+</b><span>transactions daily through one streaming pipeline</span></div>
-  <div class="metric"><b>99.99%</b><span>uptime targets; 30-40 second active-passive failover</span></div>
-  <div class="metric"><b>11+</b><span>authentication methods behind one broker</span></div>
-  <div class="metric"><b>200+</b><span>policy types under one versioned framework</span></div>
-  <div class="metric"><b>40-70%</b><span>backend load removed by caching, at the largest deployment</span></div>
-  <div class="metric"><b>90%+</b><span>directory roundtrips eliminated by credential caching</span></div>
+  <div class="metric"><b>10B+</b><span>transactions a day, in aggregate across customer deployments</span></div>
+  <div class="metric"><b>40-70%</b><span>backend load removed by multi-tier caching and request coalescing</span></div>
+  <div class="metric"><b>99.99%</b><span>uptime with sub-minute active-passive failover</span></div>
+  <div class="metric"><b>11</b><span>authentication methods behind one subsystem</span></div>
+  <div class="metric"><b>90%+</b><span>directory roundtrips eliminated by caching and connection pooling</span></div>
 </section>
 
 <h2 class="sec">Architecture</h2>
 <p class="secnote">
-  Seven planes around one data path. At 10B+ transactions a day, every design choice below is an economics choice:
-  reject early and cheap, authenticate once, verify message trust explicitly, compose policy without code, and
-  attribute every millisecond.
+  Five planes around one data path. At this scale every design choice is an economics choice: reject early and cheap,
+  authenticate once, verify message trust explicitly, compose policy without code, and attribute every millisecond.
 </p>
 
 <div class="arch">
@@ -60,82 +60,66 @@
   <div class="plane">
     <div class="plabel">Data path<small>streaming core</small></div>
     <div class="pboxes">
-      <div class="box"><b>4-stage bidirectional streaming pipeline</b><span class="role">Process Request, Send to Remote, Process Response, Send to Client; zero-copy passthrough, automatic retry and failover, 7 timing checkpoints so latency is attributable per stage</span><span class="tech">Java</span></div>
-      <div class="box"><b>Protocol mediation</b><span class="role">any protocol in, any protocol out: HTTP/HTTPS, SOAP 1.1/1.2 with WSDL, REST/JSON, JMS brokers, Kafka, AMQP 1.0, SFTP/FTP/NFS, S3, SMTP, WebSocket</span><span class="tech">JMS: IBM MQ, ActiveMQ, TIBCO EMS, Solace, Oracle MQ</span></div>
-      <div class="box"><b>WS-* reliability stack</b><span class="role">WS-ReliableMessaging 1.0/1.2 with exactly-once delivery and range-based acknowledgments; WS-SecureConversation derived-key sessions; WS-Addressing correlation</span></div>
-      <div class="box gate"><b>Memory reservation with backpressure</b><span class="role">each transaction reserves memory first; on overload the gateway sheds load with a 503 rather than degrading every caller</span></div>
+      <div class="box"><b>4-stage bidirectional streaming pipeline</b><span class="role">request processing, forwarding, response processing, and delivery, with zero-copy passthrough, automatic retry and failover, and per-stage latency attribution</span><span class="tech">Java</span></div>
+      <div class="box"><b>Protocol mediation</b><span class="role">one transaction can enter and leave over different protocols: HTTP, SOAP, REST, JMS, Kafka, AMQP, SFTP, and S3</span></div>
+      <div class="box gate"><b>Memory reservation with backpressure</b><span class="role">each transaction reserves memory first; on overload the gateway sheds load with an explicit error rather than degrading every caller</span></div>
     </div>
   </div>
 
   <div class="conn"><em>every transaction is screened before it is trusted;</em> the cheapest rejections happen earliest</div>
 
   <div class="plane">
-    <div class="plabel">Threat defense<small>reject early, reject cheap</small></div>
+    <div class="plabel">Threat defense<small>product context</small></div>
     <div class="pboxes">
-      <div class="box gate"><b>Three-tier filtering</b><span class="role">defense in depth: network-layer IP rules, then ANTLR-parsed application filters, then a signature WAF for SQL injection, signed cookies, and CSRF referer checks</span><span class="tech">ANTLR</span></div>
-      <div class="box gate"><b>Intrusion detection engine (IDP)</b><span class="role">31 detection criteria across payload size, structural depth, rate, novelty, and error events, evaluated by O(1) sensors; under 5% throughput overhead</span></div>
-      <div class="box"><b>Graduated response actions</b><span class="role">sensors trigger BLOCK, THROTTLE at 1-99%, alert, or quarantine, per-IP, per-user, or per-API; proportional, not binary</span></div>
+      <div class="box gate"><b>Layered filtering</b><span class="role">network rules, then parsed application filters, then a signature firewall for injection and cross-site attacks</span></div>
+      <div class="box gate"><b>Intrusion detection</b><span class="role">constant-time sensors on payload size, structure, rate, and error events, with graduated responses: block, throttle, alert, or quarantine</span></div>
     </div>
   </div>
 
   <div class="conn"><em>traffic that survives screening must prove who it is;</em> no anonymous transaction reaches policy</div>
 
   <div class="plane">
-    <div class="plabel">Identity + federation<small>brokered once</small></div>
+    <div class="plabel">Identity<small>authenticated once</small></div>
     <div class="pboxes">
-      <div class="box gate"><b>Authentication broker</b><span class="role">11+ methods behind one interface: Okta, Ping (PingFederate), CA SiteMinder, Oracle Access Manager, RSA SecurID, Kerberos, LDAP/Active Directory, X.509, digest, cookie SSO, custom; plus RADIUS and TACACS+</span></div>
-      <div class="box"><b>Credential caching + hardening</b><span class="role">cached principals eliminate 90%+ of directory roundtrips; pooled connections absorb the rest; login throttling and replay caches close the abuse windows</span></div>
-      <div class="box"><b>SAML federation, both directions</b><span class="role">SAML 1.1/2.0 in both Identity Provider and Service Provider modes: assert identity outbound, consume assertions inbound</span></div>
-      <div class="box"><b>OAuth 2.0 / OpenID Connect server</b><span class="role">a full authorization server, not just a validator: all major grant types, JWT issuance and validation, 100,000+ token caches per policy; Google, Azure AD, Salesforce, Ping</span><span class="tech">OAuth 2.0, OIDC</span></div>
+      <div class="box gate"><b>Authentication subsystem</b><span class="role">11 methods behind one interface, among them Okta, Ping, SiteMinder, Kerberos, LDAP and Active Directory, X.509, and SAML federation in both directions</span></div>
+      <div class="box"><b>Caching and connection pooling</b><span class="role">cached principals and pooled directory connections eliminate 90%+ of directory roundtrips; login throttling and replay caches close the abuse windows</span></div>
+      <div class="box"><b>OAuth 2.0 and OpenID Connect</b><span class="role">a full authorization server, not just a validator: token issuance and validation with per-policy token caches</span><span class="tech">OAuth 2.0, OIDC</span></div>
     </div>
   </div>
 
   <div class="conn"><em>transport trust is not message trust;</em> each document can carry its own signature and encryption, verified here</div>
 
   <div class="plane">
-    <div class="plabel">Document security<small>message trust, key custody</small></div>
+    <div class="plabel">Message security<small>product context</small></div>
     <div class="pboxes">
-      <div class="box gate"><b>XML digital signature, sign and verify</b><span class="role">XML-DSig in enveloped, enveloping, and detached forms; RSA to 4096-bit, ECDSA, HMAC; multiple canonicalization methods so equal documents verify equal</span><span class="tech">XML-DSig</span></div>
-      <div class="box gate"><b>PKIX certificate path validation</b><span class="role">RFC 5280 path validation with revocation over CRL and OCSP, both cached so revocation checking never becomes the latency budget</span></div>
-      <div class="box"><b>Encryption standards</b><span class="role">XML Encryption, WS-Security 2002/2004/1.1, JWE with 17 algorithms, OpenPGP, AS2; AES-GCM for authenticated encryption</span></div>
-      <div class="box"><b>HSM-backed key custody</b><span class="role">signing and decryption keys held in nCipher hardware security modules; FIPS 140-2 cryptography for financial and government deployments</span><span class="tech">nCipher, FIPS 140-2</span></div>
+      <div class="box gate"><b>Signatures and certificate validation</b><span class="role">XML digital signatures signed and verified; certificate chains path-validated with cached revocation checks so revocation never becomes the latency budget</span></div>
+      <div class="box"><b>Encryption standards</b><span class="role">XML Encryption, WS-Security, JWE, OpenPGP, and AS2, with authenticated encryption throughout</span></div>
+      <div class="box"><b>HSM-backed key custody</b><span class="role">signing and decryption keys held in hardware security modules; FIPS 140-2 cryptography for financial and government deployments</span><span class="tech">HSM, FIPS 140-2</span></div>
     </div>
   </div>
 
-  <div class="conn"><em>verified traffic enters a policy pipeline</em> operators compose, version, and audit without writing code</div>
+  <div class="conn"><em>verified traffic enters a policy pipeline</em> that operators compose, version, and audit without writing code</div>
 
   <div class="plane">
     <div class="plabel">Policy engine<small>no-code control plane</small></div>
     <div class="pboxes">
-      <div class="box"><b>ManagedObject configuration framework</b><span class="role">one annotation-driven framework manages 200+ policy types: versioned with audit trails, import/export with dependency resolution, clone and template, domain-based multi-tenancy</span><span class="tech">Java</span></div>
-      <div class="box"><b>No-code policy builder</b><span class="role">60+ processors for security, transformation, routing, and validation compose into policies through configuration, not code</span></div>
-      <div class="box gate"><b>Sandboxed scripting escape hatch</b><span class="role">class-filtered Nashorn JavaScript on the JVM, plus Python, for the last mile; scripts run inside the sandbox, not beside it</span><span class="tech">Nashorn, Python</span></div>
-      <div class="box"><b>Scheduled execution + virtual routing</b><span class="role">policies run on schedules as well as on requests; virtual directories decouple published URLs from backend topology, so routing is configuration</span></div>
+      <div class="box"><b>No-code API builder</b><span class="role">dozens of processors for security, data transformation, routing, and validation compose into policies through configuration; new-API onboarding went from weeks to hours</span></div>
+      <div class="box"><b>Versioned configuration framework</b><span class="role">the product's annotation-driven model manages every policy type, versioned with audit trails, import and export with dependency resolution, and domain-based multi-tenancy</span><span class="tech">Java</span></div>
+      <div class="box gate"><b>Sandboxed scripting escape hatch</b><span class="role">class-filtered inline JavaScript on the JVM for the last mile; scripts run inside the sandbox, not beside it</span><span class="tech">Nashorn</span></div>
+      <div class="box"><b>OpenAPI import and virtual routing</b><span class="role">OpenAPI specifications generate gateway configuration; virtual directories decouple published URLs from backend topology</span></div>
     </div>
   </div>
 
   <div class="conn"><em>policy output consults the cache tier and the load balancer</em> before any backend spends a cycle</div>
 
   <div class="plane">
-    <div class="plabel">Performance + delivery<small>fast, cheap, up</small></div>
+    <div class="plabel">Delivery<small>fast, cheap, up</small></div>
     <div class="pboxes">
-      <div class="box"><b>Multi-tier response cache</b><span class="role">in-memory LRU, disk, and Redis tiers, RFC 7234 compliant; gzip and deflate compression; analytics sampled every 5 seconds; backend load cut 40-70%</span><span class="tech">Redis</span></div>
+      <div class="box"><b>Multi-tier response cache</b><span class="role">in-memory, disk, and Redis tiers with compression, configured through no-code cache policies; backend load cut 40-70%</span><span class="tech">Redis</span></div>
       <div class="box"><b>Request coalescing</b><span class="role">anti-stampede: concurrent misses for one key collapse into a single backend call and every waiter shares the answer</span></div>
-      <div class="box"><b>Backend groups, 9 balancing strategies</b><span class="role">dynamic load-based routing by throughput, fewest connections, and fastest response, plus weighted and replication broadcast; TCP and HTTP health checks remove and rejoin backends automatically</span></div>
-      <div class="box"><b>Active-passive appliance failover</b><span class="role">MAC address virtualization moves network identity to the survivor without switch relearning; split-brain prevention guarantees one active node; 30-40 second recovery</span></div>
-    </div>
-  </div>
-
-  <div class="conn"><em>none of it is taken on faith;</em> every stage is timed and every log line is signed</div>
-
-  <div class="plane">
-    <div class="plabel">Observability + integrations<small>evidence and reach</small></div>
-    <div class="pboxes">
-      <div class="box"><b>Per-transaction latency attribution</b><span class="role">the 7 checkpoints break every transaction into client, gateway, backend, identity, and database time at 1-second granularity, over a 24-hour circular-buffer series</span></div>
-      <div class="box"><b>Operations surfaces</b><span class="role">JMX MBeans, SNMP MIB and traps, and a REST diagnostics API for anything a dashboard needs to ask</span><span class="tech">JMX, SNMP</span></div>
-      <div class="box"><b>Tamper-evident audit + alerting</b><span class="role">cryptographically signed logs export to SIEM over Syslog RFC 5424, CEF, and GELF; asynchronous SMTP and SNMP alerting, throttled against storms</span></div>
-      <div class="box"><b>20+ platform integrations</b><span class="role">databases, LDAP, AWS S3 with Signature V4 and terabyte-scale multipart, EC2, Azure Service Bus, Salesforce over REST and gRPC Pub/Sub, EDI over AS2 and ebMS</span></div>
-      <div class="box"><b>OpenAPI import</b><span class="role">OpenAPI 2.0/3.0 import generates gateway configuration automatically, with an embedded Swagger console; onboarding cut from weeks to days</span></div>
+      <div class="box"><b>Backend groups</b><span class="role">load-balancing strategies from fewest connections to fastest response, with health checks that remove and rejoin backends automatically</span></div>
+      <div class="box gate"><b>Active-passive failover</b><span class="role">the survivor assumes the pair's virtualized network identity without switch relearning, split-brain prevention guarantees one active node, and recovery is sub-minute</span></div>
+      <div class="box"><b>Per-stage latency attribution</b><span class="role">timing checkpoints break every transaction into client, gateway, backend, identity, and database time, with signed logs to the SIEM and throttled alerting</span></div>
     </div>
   </div>
 
@@ -148,74 +132,65 @@
 
 <h2 class="sec">One transaction</h2>
 <ol class="flow">
-  <li><span><b>Ingress, streamed not buffered.</b> <span class="via">The transaction enters over any mediated protocol and is normalized into the 4-stage pipeline without buffering the payload; memory reservation admits it or sheds it with a 503.</span></span></li>
-  <li><span><b>Reliability contract attaches.</b> <span class="via">Where the transport demands it, a WS-ReliableMessaging sequence is established with exactly-once delivery and range-based acknowledgments; WS-Addressing tags the message for correlation.</span></span></li>
-  <li><span><b>Screening runs cheapest first.</b> <span class="via">Network IP rules, then ANTLR application filters, then WAF signatures; intrusion sensors update per-IP, per-user, and per-API state and can block, throttle, alert, or quarantine on the spot.</span></span></li>
-  <li><span><b>Identity resolves once.</b> <span class="via">One of the 11+ brokered methods authenticates the caller; the credential cache answers 90%+ of lookups without a roundtrip; throttling and replay caches guard the door.</span></span></li>
+  <li><span><b>Ingress, streamed not buffered.</b> <span class="via">The transaction enters over any mediated protocol and is normalized into the 4-stage pipeline without buffering the payload; memory reservation admits it or sheds it with an explicit error.</span></span></li>
+  <li><span><b>Screening runs cheapest first.</b> <span class="via">Network rules, then application filters, then firewall signatures; intrusion sensors can block, throttle, alert, or quarantine on the spot.</span></span></li>
+  <li><span><b>Identity resolves once.</b> <span class="via">One of the 11 authentication methods authenticates the caller; the credential cache answers most lookups without a roundtrip; throttling and replay caches guard the door.</span></span></li>
   <li><span><b>Federation happens at the edge.</b> <span class="via">A SAML assertion is issued or consumed, or an OAuth token is minted or validated against the per-policy token caches; backends never do their own identity plumbing.</span></span></li>
   <li><span><b>Message security is enforced.</b> <span class="via">Signatures are verified or applied, certificate chains are path-validated with cached revocation checks, and payloads are decrypted or encrypted per policy.</span></span></li>
-  <li><span><b>The policy pipeline executes.</b> <span class="via">Composed processors run in stages, with sandboxed Nashorn or Python scripts covering the last mile; every stage is bounded by a timing checkpoint.</span></span></li>
-  <li><span><b>Cache, then balance.</b> <span class="via">The cache answers hits immediately and coalesces concurrent misses into one backend call; on a true miss, one of 9 balancing strategies places it, with health checks and failover behind it.</span></span></li>
-  <li><span><b>Egress with attribution and evidence.</b> <span class="via">The response streams back through Process Response and Send to Client; 7 checkpoints attribute the latency, signed logs flow to the SIEM, and alerting fires if a threshold tripped.</span></span></li>
+  <li><span><b>The policy pipeline executes.</b> <span class="via">Composed processors run in stages, with sandboxed inline JavaScript covering the last mile; every stage is bounded by a timing checkpoint.</span></span></li>
+  <li><span><b>Cache, then balance.</b> <span class="via">The cache answers hits immediately and coalesces concurrent misses into one backend call; on a true miss, a balancing strategy places it, with health checks and failover behind it.</span></span></li>
+  <li><span><b>Egress with attribution and evidence.</b> <span class="via">The response streams back through response processing and delivery; the checkpoints attribute the latency, signed logs flow to the SIEM, and alerting fires if a threshold tripped.</span></span></li>
 </ol>
 
 <h2 class="sec">Key decisions</h2>
 <div class="decisions">
   <div class="decision">
     <h3>Stream, never buffer</h3>
-    <p><b>Decision:</b> a zero-copy, 4-stage bidirectional streaming pipeline with per-transaction memory reservation and backpressure that answers overload with an explicit 503.</p>
+    <p><b>Decision:</b> a zero-copy, 4-stage bidirectional streaming pipeline with per-transaction memory reservation and backpressure that answers overload with an explicit error.</p>
     <p><b>Alternative considered:</b> buffer-and-forward proxying: read the whole message, then operate on it. Simpler to write and debug.</p>
-    <p><b>Consequence:</b> at 10B+ transactions daily the arithmetic closes only one way. Zero-copy keeps per-transaction memory near constant, terabyte-scale objects move through the same machinery as small calls, and overload degrades by deliberate load shedding instead of collapse.</p>
+    <p><b>Consequence:</b> at 10B+ transactions a day in aggregate the arithmetic closes only one way. Zero-copy keeps per-transaction memory near constant, large objects move through the same machinery as small calls, and overload degrades by deliberate load shedding instead of collapse.</p>
   </div>
   <div class="decision">
-    <h3>Constant-time sensors, not per-request deep analysis</h3>
-    <p><b>Decision:</b> an intrusion-detection engine built from O(1) sensors evaluating 31 criteria, with graduated actions: block, throttle at 1-99%, alert, quarantine.</p>
-    <p><b>Alternative considered:</b> heavyweight per-request inspection or offline anomaly analytics: richer verdicts, paid for on the hot path or delivered after the damage.</p>
-    <p><b>Consequence:</b> detection rides the data path at under 5% overhead, verdicts land per-IP, per-user, or per-API in real time, and percentage throttling gives a proportional response where a binary block would take out legitimate traffic with the abuse.</p>
+    <h3>Cache and coalesce, not bigger backends</h3>
+    <p><b>Decision:</b> a multi-tier response cache, in-memory, disk, and Redis, with request coalescing so concurrent misses for one key become one backend call, all configured through no-code cache policies.</p>
+    <p><b>Alternative considered:</b> scale the backends behind the gateway and let every miss through.</p>
+    <p><b>Consequence:</b> backend load fell 40-70%, cache stampedes stopped being an outage class, and the caching behavior became something an operator configures per API instead of something a developer codes per integration.</p>
   </div>
   <div class="decision">
-    <h3>Configuration as a managed object model, code as the escape hatch</h3>
-    <p><b>Decision:</b> the ManagedObject framework, 200+ policy types, annotation-driven, versioned and auditable, with a 60+ processor no-code builder on top and sandboxed scripting reserved for the last mile.</p>
+    <h3>Configuration as the product, code as the escape hatch</h3>
+    <p><b>Decision:</b> a no-code builder of dozens of processors, sitting on the product's versioned configuration framework, with sandboxed inline JavaScript reserved for the last mile.</p>
     <p><b>Alternative considered:</b> a scripting-first gateway where every policy is code. Maximum flexibility, minimum governance.</p>
-    <p><b>Consequence:</b> policies became reviewable, versionable, promotable artifacts instead of scripts, onboarding fell from weeks to days, and a decade later the managed-policy shape returned as the governance overlay for AI tools.</p>
+    <p><b>Consequence:</b> policies became reviewable, versionable, promotable artifacts instead of scripts, onboarding a new API fell from weeks to hours, and years later the same shape returned as the governance layer on agent tools.</p>
   </div>
   <div class="decision">
-    <h3>Active-passive with MAC virtualization, not active-active</h3>
-    <p><b>Decision:</b> one active appliance and one passive, with MAC address virtualization so the survivor assumes the pair's network identity, split-brain prevention so one node ever owns it, and 30-40 second recovery.</p>
+    <h3>Active-passive with a virtualized network identity, not active-active</h3>
+    <p><b>Decision:</b> one active appliance and one passive, with the survivor assuming the pair's network identity so neighbors keep forwarding without relearning, split-brain prevention so only one node ever owns it, and sub-minute recovery.</p>
     <p><b>Alternative considered:</b> active-active clustering: better utilization, but state synchronization and split-brain hazards multiply on a stateful security workload.</p>
-    <p><b>Consequence:</b> failover is deterministic at a sub-minute recovery target, neighbors keep forwarding without relearning the network, and 99.99% targets held on workloads where a split brain would mean two gateways making conflicting security decisions.</p>
+    <p><b>Consequence:</b> failover is deterministic with sub-minute recovery, and 99.99% uptime held on workloads where a split brain would mean two gateways making conflicting security decisions.</p>
   </div>
 </div>
 
-<h2 class="sec">What the AI platforms inherited</h2>
+<h2 class="sec">What the AI stack inherited</h2>
 <div class="layers">
-  <div class="layer"><h3>Policy overlay &#8594; MCP governance</h3><p>Sentry's ManagedObject policy pipeline, 200+ types composed without code, versioned and audited, is the direct ancestor of the governance overlay for MCP tools: scoped authorization, rate limits, and audit attached to artifacts instead of hand-written per integration.</p></div>
-  <div class="layer"><h3>Identity brokering &#8594; tenant identity</h3><p>An authentication broker with 11+ methods behind one interface, plus caching that eliminated 90%+ of directory roundtrips, taught the pattern the AI platforms use for Okta, GitHub, and local identity: resolve identity once at the edge, scope everything behind it.</p></div>
-  <div class="layer"><h3>Stage checkpoints &#8594; agent tracing</h3><p>The 7 timing checkpoints that attribute gateway latency stage by stage became span-level trace attribution in the agent runtime: same discipline, new substrate. When an agent run is slow, the trace names the hop that spent the time, exactly as the pipeline did for a transaction.</p></div>
+  <div class="layer"><h3>Policy pipeline &#8594; tool governance</h3><p>A policy pipeline composed without code, versioned and audited, is the direct ancestor of the governance layer on agent tools in SecureGPT and DevX: scoped authorization and audit attached to the artifact instead of hand-written per integration.</p></div>
+  <div class="layer"><h3>Identity brokering &#8594; tenant identity</h3><p>An authentication subsystem with 11 methods behind one interface, plus caching and connection pooling that eliminated 90%+ of directory roundtrips, taught the pattern the AI stack uses for Okta, GitHub, and local identity: resolve identity once at the edge, scope everything behind it.</p></div>
+  <div class="layer"><h3>Stage checkpoints &#8594; agent tracing</h3><p>The timing checkpoints that attribute gateway latency stage by stage became span-level trace attribution in the agent harness: same discipline, new substrate. When an agent run is slow, the trace names the hop that spent the time, exactly as the pipeline did for a transaction.</p></div>
 </div>
 
 <h2 class="sec">Stack</h2>
 <div class="chips">
-  <span class="chip">Java</span><span class="chip">HTTP/HTTPS</span><span class="chip">SOAP 1.1/1.2 + WSDL</span><span class="chip">REST/JSON</span>
-  <span class="chip">JMS: IBM MQ, ActiveMQ, TIBCO EMS, Solace, Oracle MQ</span><span class="chip">Kafka</span><span class="chip">AMQP 1.0</span>
-  <span class="chip">WebSocket</span><span class="chip">SFTP/FTP/NFS</span><span class="chip">Amazon S3</span><span class="chip">SMTP</span>
-  <span class="chip">WS-ReliableMessaging</span><span class="chip">WS-SecureConversation</span><span class="chip">WS-Addressing</span>
-  <span class="chip">SAML 1.1/2.0</span><span class="chip">OAuth 2.0 / OpenID Connect</span><span class="chip">JWT / JWE</span>
-  <span class="chip">LDAP / Active Directory</span><span class="chip">Kerberos</span><span class="chip">RADIUS / TACACS+</span>
-  <span class="chip">X.509 / PKIX / CRL / OCSP</span><span class="chip">XML-DSig</span><span class="chip">XML Encryption</span>
-  <span class="chip">WS-Security</span><span class="chip">OpenPGP</span><span class="chip">AS2 / ebMS</span><span class="chip">AES-GCM</span>
-  <span class="chip">nCipher HSM</span><span class="chip">FIPS 140-2</span><span class="chip">ANTLR</span><span class="chip">Nashorn / Python</span>
-  <span class="chip">Redis</span><span class="chip">JMX / SNMP</span><span class="chip">Syslog / CEF / GELF</span>
-  <span class="chip">OpenAPI + Swagger</span><span class="chip">AWS S3 / EC2</span><span class="chip">Azure Service Bus</span>
-  <span class="chip">Salesforce gRPC Pub/Sub</span>
+  <span class="chip">Java</span><span class="chip">HTTP/HTTPS</span><span class="chip">SOAP / WSDL</span><span class="chip">REST / JSON</span>
+  <span class="chip">JMS</span><span class="chip">Kafka</span><span class="chip">AMQP</span><span class="chip">SFTP</span><span class="chip">Amazon S3</span>
+  <span class="chip">SAML</span><span class="chip">OAuth 2.0 / OIDC</span><span class="chip">LDAP / Active Directory</span><span class="chip">Kerberos</span>
+  <span class="chip">X.509 / PKIX</span><span class="chip">HSM, FIPS 140-2</span><span class="chip">Redis</span><span class="chip">Nashorn JavaScript</span>
 </div>
 
 <footer class="foot">
-  <div>Back to <a href="index.html">the ecosystem overview</a>, or continue to <a href="devx.html">DevX</a> where this DNA lives now.</div>
+  <div>Charan Lingamgunta &#183; Staff Software Engineer &#183; Boston, MA &#183; <a href="mailto:charan.lingamgunta@gmail.com">charan.lingamgunta@gmail.com</a> &#183; <a href="https://linkedin.com/in/charan-lingamgunta">LinkedIn</a> &#183; <a href="resume.pdf">Resume</a></div>
+  <div>Back to <a href="index.html">the overview</a>, or continue to <a href="securegpt.html">SecureGPT</a> where these instincts live now.</div>
   <div class="terms">
-    IDP = Intrusion Detection and Prevention (distinct from IdP, Identity Provider) &#183; WAF = Web Application Firewall &#183;
     HSM = Hardware Security Module &#183; FIPS = Federal Information Processing Standards &#183;
-    SIEM = Security Information and Event Management &#183; MCP = Model Context Protocol
+    SIEM = Security Information and Event Management &#183; OIDC = OpenID Connect &#183; SAML = Security Assertion Markup Language
   </div>
 </footer>
 

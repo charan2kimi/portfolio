@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SecureGPT Architecture | Charan Lingamgunta</title>
+<meta name="description" content="SecureGPT, document AI and agent harness: three-path document extraction into hybrid retrieval, guardrails on every prompt and de-identification before public model calls, a sandboxed agent runtime with an MCP tool registry, model serving on vLLM and Bedrock behind one gateway, and evaluation gates on agents and model releases.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%232563eb'/><text x='50' y='68' font-size='52' text-anchor='middle' fill='white' font-family='Arial'>CL</text></svg>">
+<link rel="stylesheet" href="style.css">
+</head>
+<body class="p-securegpt">
+<div class="wrap">
+
+<nav class="nav">
+  <span class="namegroup">
+    <a class="home" href="index.html">Charan Lingamgunta</a>
+    <a class="contact" href="https://linkedin.com/in/charan-lingamgunta">LinkedIn</a>
+    <button class="copybtn" type="button" onclick="navigator.clipboard.writeText('charan.lingamgunta@gmail.com');this.textContent='Copied';this.classList.add('done');setTimeout(()=>{this.textContent='Email';this.classList.remove('done');},1200)">Email</button>
+  </span>
+  <a href="index.html">Overview</a>
+  <a class="active" href="securegpt.html">SecureGPT</a>
+  <a href="devx.html">DevX</a>
+  <a href="finetuning.html">Fine-Tuning</a>
+  <a href="sentry.html">Sentry</a>
+  <a class="cta" href="resume.pdf">Resume (PDF)</a>
+</nav>
+
+<header class="pagehead">
+  <span class="accentbar"></span>
+  <h1>SecureGPT, Document AI and Agent Harness</h1>
+  <p class="scope">
+    <strong>Container-level view: the infrastructure an enterprise AI product ships on.</strong>
+    SecureGPT began as a private chat and document chat service, private and public models behind guardrails, with
+    de-identification whenever a public model is involved, streaming answers to users. It grew into the document AI pipeline and the agent harness
+    that analyst and data science teams run their work through today. Deployed in customers' own environments
+    for regulated healthcare, financial services, and public sector work. I am the architect and technical lead;
+    12 engineers across the inference, agents, document ingestion and RAG, and deployment teams build to the
+    standards set here. Jan 2022 to present.
+  </p>
+</header>
+
+<section class="metrics">
+  <div class="metric"><b>10,000+</b><span>governed agent runs a day at a top&nbsp;3 health insurer</span></div>
+  <div class="metric"><b>50,000</b><span>insurance and Medicare documents read a month</span></div>
+  <div class="metric"><b>63.3% &#8594; 97%</b><span>fact-level extraction accuracy on a 685-fact ground truth</span></div>
+  <div class="metric"><b>70%</b><span>less peak memory on document load, unlocking parallel processing</span></div>
+</section>
+
+<h2 class="sec">Architecture</h2>
+<p class="secnote">
+  Six planes. Every request passes the safety plane first; documents flow through the document AI plane into
+  retrieval; agents run inside the harness under policy; every answer comes through one serving layer; and the
+  evaluation plane decides what ships and watches what shipped.
+</p>
+
+<div class="arch">
+  <div class="dtitle">SecureGPT, container-level, request and document paths</div>
+  <div class="dsub">VL = vision-language. OCR = optical character recognition. Read top to bottom; connectors name the contract between planes.</div>
+
+  <div class="plane">
+    <div class="plabel">Entry<small>chat, documents, agents</small></div>
+    <div class="pboxes">
+      <div class="box"><b>Chat and document chat</b><span class="role">sign in, pick an allowed model, ask, and upload documents to ask about; answers stream token by token</span><span class="tech">SSE</span></div>
+      <div class="box"><b>Agent chat</b><span class="role">hands agent work to the harness; results stream live or run durably in the background</span></div>
+      <div class="box gate"><b>Model policy</b><span class="role">which models each user group may use, private or public, decided before any model sees the question</span></div>
+    </div>
+  </div>
+
+  <div class="conn"><em>every prompt is screened before it reaches retrieval or an agent;</em> the checks run concurrently so safety costs one check's latency, not five</div>
+
+  <div class="plane">
+    <div class="plabel">Safety<small>guardrails and de&#8209;identification</small></div>
+    <div class="pboxes">
+      <div class="box gate"><b>Five concurrent checks</b><span class="role">legal-risk screening, acceptable-use, content moderation, intent classification, and safety, in parallel on every prompt; a firm can add its own</span></div>
+      <div class="box gate"><b>Prompt-injection detection</b><span class="role">recent questions compared against known attack patterns before retrieval or any agent</span></div>
+      <div class="box gate"><b>De-identification</b><span class="role">names, addresses, and health identifiers tagged at ingestion are replaced before a public model call and restored in the answer; private models see the originals</span></div>
+    </div>
+  </div>
+
+  <div class="conn"><em>uploads take a separate path;</em> a document is extracted, chunked, embedded, and tagged before it can be asked about</div>
+
+  <div class="plane">
+    <div class="plabel">Document AI<small>ingestion + retrieval</small></div>
+    <div class="pboxes">
+      <div class="box"><b>Ingestion engine</b><span class="role">a long-running worker consumes the upload stream; the upload is acknowledged at once and status flows back at every phase</span><span class="tech">Redis streams</span></div>
+      <div class="box"><b>Three extraction paths</b><span class="role">fast text, OCR with table layout, or vision-language deep transformation, chosen per document</span></div>
+      <div class="box"><b>Self-hosted embeddings + PII and PHI tags</b><span class="role">vectors and sensitive spans come from models running inside the deployment</span></div>
+      <div class="box"><b>Hybrid retrieval</b><span class="role">BM25 and kNN fused with reciprocal rank fusion, with query decomposition for broad questions</span><span class="tech">OpenSearch</span></div>
+    </div>
+  </div>
+
+  <div class="conn"><em>agents run inside the harness;</em> tools arrive from DevX over MCP, and every run is traced</div>
+
+  <div class="plane">
+    <div class="plabel">Agent harness<small>the runtime</small></div>
+    <div class="pboxes">
+      <div class="box"><b>Orchestration</b><span class="role">nested sub-agents run as tools; a run streams live or executes durably with checkpoint and resume</span></div>
+      <div class="box gate"><b>Sandbox</b><span class="role">a restricted Python interpreter with AST validation, import allowlists, and resource limits, from sandbox testing through production; microVM isolation is chosen per agent by its designer</span></div>
+      <div class="box gate"><b>MCP server + tool registry</b><span class="role">discovery scoped to the namespaces a query needs, per-identity authorization, SOC 2-aligned audit logging</span><span class="tech">MCP</span></div>
+      <div class="box"><b>Tracing</b><span class="role">every run, tool call, and sub-agent hop lands as a trace you can walk step by step</span><span class="tech">MLflow</span></div>
+    </div>
+  </div>
+
+  <div class="conn"><em>every answer</em> comes through one serving layer that enforces the model policy decided at entry</div>
+
+  <div class="plane">
+    <div class="plabel">Model serving<small>one gateway</small></div>
+    <div class="pboxes">
+      <div class="box"><b>Open-weight models</b><span class="role">brought up on vLLM across AWS, GCP, and RunPod GPU hosts, serving parameters tuned per deployment; fine-tuned models serve the same way</span><span class="tech">vLLM</span></div>
+      <div class="box ext"><b>Frontier models</b><span class="role">through Bedrock where a firm allows public models; answer-time calls are de-identified first, and on the deep extraction path the firm's policy decides whether a frontier or a self-hosted VL model reads the page</span><span class="tech">Amazon Bedrock</span></div>
+      <div class="box gate"><b>OpenAI-compatible gateway</b><span class="role">one interface across every model with access policies per user group; a new model is a registry entry, not a code change</span><span class="tech">LiteLLM</span></div>
+    </div>
+  </div>
+
+  <div class="conn"><em>nothing ships on a demo;</em> agents pass regression gates, releases are scored, and production is sampled</div>
+
+  <div class="plane">
+    <div class="plabel">Evaluation<small>gate, score, watch</small></div>
+    <div class="pboxes">
+      <div class="box gate"><b>Golden datasets as regression gates</b><span class="role">an agent reaches production only after it holds its score on a pinned golden dataset</span></div>
+      <div class="box"><b>Online evals</b><span class="role">sampled production runs scored by an LLM judge, failures flagged for review</span></div>
+      <div class="box"><b>Model release scoring</b><span class="role">each frontier and open-weight release scored on agentic reasoning, code generation, PDF extraction, guardrail, and de-identification tasks; throughput benchmarked across GPU topologies</span></div>
+      <div class="box"><b>Extraction ground truth</b><span class="role">the 685-fact set behind 63.3% to 97%; frontier models benchmarked against open-weight VL models to pick the production model</span></div>
+    </div>
+  </div>
+
+  <div class="legend">
+    <span class="k"><span class="sw"></span> platform component</span>
+    <span class="k"><span class="sw gate"></span> enforcement point</span>
+    <span class="k"><span class="sw ext"></span> external system (opaque)</span>
+    <span class="k"><span class="sw plane"></span> plane = one responsibility</span>
+  </div>
+</div>
+
+<h2 class="sec">One document, one question, one agent run</h2>
+<ol class="flow">
+  <li><span><b>A document lands.</b> <span class="via">The upload is acknowledged at once and a job goes onto the ingestion stream; the user sees status change phase by phase.</span></span></li>
+  <li><span><b>The right extraction path runs.</b> <span class="via">Fast text for a digital PDF, OCR with table layout for a scan, vision-language deep transformation where a model has to read the page. Chunks get self-hosted embeddings and PII and PHI tags, then land in OpenSearch.</span></span></li>
+  <li><span><b>A question arrives.</b> <span class="via">Five guardrail checks and prompt-injection detection run concurrently before retrieval or any agent is chosen.</span></span></li>
+  <li><span><b>Retrieval, then the boundary.</b> <span class="via">Hybrid BM25 plus kNN retrieval with reciprocal rank fusion pulls the evidence. If the user's policy points at a public model, names, addresses, and health identifiers are replaced from the entity maps; a private model sees the originals.</span></span></li>
+  <li><span><b>The answer streams.</b> <span class="via">The gateway routes the call under the user group's policy, the model streams, and the answer is re-identified on the way back to the user.</span></span></li>
+  <li><span><b>An agent run starts.</b> <span class="via">The harness plans, calls nested sub-agents as tools, and discovers MCP tools scoped to the namespaces the query needs, each call authorized per identity, with data access and egress decided by attribute-based rules at runtime.</span></span></li>
+  <li><span><b>Code runs in the sandbox.</b> <span class="via">The restricted interpreter enforces AST validation, import allowlists, and resource limits on every step, inside a microVM where the agent's designer chose one.</span></span></li>
+  <li><span><b>Live or durable.</b> <span class="via">Interactive runs stream; long runs execute in the background with every completed step checkpointed, so a crash resumes instead of restarting.</span></span></li>
+  <li><span><b>The trace lands and production is sampled.</b> <span class="via">Every run can be walked step by step in MLflow; online evals sample runs, score them with an LLM judge, and flag failures for review.</span></span></li>
+</ol>
+
+<h2 class="sec">Key decisions</h2>
+<div class="decisions">
+  <div class="decision">
+    <h3>Three extraction paths, not one OCR pass</h3>
+    <p><b>Decision:</b> route each document to fast text, OCR with table layout, or vision-language deep transformation, and pick the production model for the deep path by benchmarking frontier against open-weight VL models on a 685-fact ground truth.</p>
+    <p><b>Alternative considered:</b> one extraction strategy for every document, tuned until it was good enough.</p>
+    <p><b>Consequence:</b> fact-level accuracy on 50,000 insurance and Medicare documents a month went from 63.3% to 97%, most of it from reworking the pipeline rather than swapping a model, and the ground truth is what makes every later model change measurable.</p>
+  </div>
+  <div class="decision">
+    <h3>De-identify at the boundary, let the firm choose the model</h3>
+    <p><b>Decision:</b> tag names, addresses, and health identifiers at ingestion and rewrite them only when a policy points at a public model, restoring them in the answer. Private, self-hosted models see the originals.</p>
+    <p><b>Alternative considered:</b> private models only, or public models with a blanket redaction that never comes back.</p>
+    <p><b>Consequence:</b> at answer time a regulated firm can use a frontier model with only de-identified text leaving the deployment, or stay fully private, with the same product and the same audit trail either way. On the deep extraction path, whether a frontier or a self-hosted VL model reads the page is the same firm-level policy.</p>
+  </div>
+  <div class="decision">
+    <h3>One sandbox path from test to production</h3>
+    <p><b>Decision:</b> the restricted interpreter that enforces AST validation, import allowlists, and resource limits is the same one an analyst tests against before publishing and the one production runs on; microVM isolation is chosen per agent by its designer, on top of it.</p>
+    <p><b>Alternative considered:</b> a permissive test sandbox and a locked-down production one, or an engineer reviewing every analyst change.</p>
+    <p><b>Consequence:</b> what passed in testing is what runs, analyst-authored agents reach production without a review queue, and agents that need hardware isolation get it without a second code path.</p>
+  </div>
+  <div class="decision">
+    <h3>Gate before release, sample after</h3>
+    <p><b>Decision:</b> golden datasets are the regression gate every agent must hold before release; online evals sample production runs and score them with an LLM judge afterward; model releases get their own scoring lanes before an A/B and a phased rollout.</p>
+    <p><b>Alternative considered:</b> one evaluation loop doing all three jobs, or release on demo.</p>
+    <p><b>Consequence:</b> the gate is cheap to rerun and reproducible, drift the golden set never contained still surfaces in production, and a new frontier or open-weight model earns its place on the same tasks the last one did.</p>
+  </div>
+</div>
+
+<h2 class="sec">The three layers</h2>
+<div class="layers">
+  <div class="layer"><h3>Data layer</h3><p>Users, policies, documents, and conversations in a relational store; chunks, vectors, and entity spans in OpenSearch; uploads and chunk files on local storage inside the deployment. Embeddings and entity tagging run on self-hosted models. Whether a frontier model may read a page on the deep extraction path, or receive a de-identified chunk at answer time, is the firm's policy, not a default.</p></div>
+  <div class="layer"><h3>Product layer</h3><p>Chat, document chat, and agent chat behind one front door, with guardrails on every prompt, de-identification only when a public model is involved, and model policy per user group. Agents and tools authored in <a href="devx.html">DevX</a> publish into the harness over MCP; the same registry decides what each identity can discover and call.</p></div>
+  <div class="layer"><h3>Deployment layer</h3><p>The product ships as a self-contained stack that customers run in their own environments, with their own search cluster and their own models on their hardware; frontier models through Bedrock only where the firm's policy allows. Open-weight models are served on vLLM across AWS, GCP, and RunPod GPU hosts behind the same gateway. HIPAA, HITRUST, and SOC 2 aligned deployments.</p></div>
+</div>
+
+<h2 class="sec">Stack</h2>
+<div class="chips">
+  <span class="chip">Python</span><span class="chip">Django</span><span class="chip">FastAPI</span><span class="chip">React</span>
+  <span class="chip">OpenSearch</span><span class="chip">Redis</span><span class="chip">PostgreSQL</span>
+  <span class="chip">vLLM</span><span class="chip">LiteLLM</span><span class="chip">Amazon Bedrock</span><span class="chip">MCP</span><span class="chip">DSPy</span>
+  <span class="chip">MLflow</span><span class="chip">Docker</span><span class="chip">AWS</span><span class="chip">GCP</span><span class="chip">RunPod</span>
+</div>
+
+<footer class="foot">
+  <div>Charan Lingamgunta &#183; Staff Software Engineer &#183; Boston, MA &#183; <a href="mailto:charan.lingamgunta@gmail.com">charan.lingamgunta@gmail.com</a> &#183; <a href="https://linkedin.com/in/charan-lingamgunta">LinkedIn</a> &#183; <a href="resume.pdf">Resume</a></div>
+  <div>Next: <a href="devx.html">DevX, where the APIs, agents, and tools that run here are cataloged and authored &#8594;</a></div>
+  <div class="terms">
+    VL = vision-language &#183; OCR = optical character recognition &#183; PII = Personally Identifiable Information &#183;
+    PHI = Protected Health Information &#183; MCP = Model Context Protocol &#183; AST = Abstract Syntax Tree &#183;
+    RAG = Retrieval-Augmented Generation &#183; SSE = Server-Sent Events &#183; kNN = k-Nearest Neighbors &#183;
+    BM25 = Best Match 25 lexical ranking &#183; SOC = System and Organization Controls
+  </div>
+</footer>
+
+</div>
+</body>
+</html>
