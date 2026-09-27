@@ -58,8 +58,8 @@
   <div class="plane">
     <div class="plabel">Portal<small>discovery + operations</small></div>
     <div class="pboxes">
-      <div class="box"><b>Catalog + discovery</b><span class="role">the single source of truth for the client's API estate: unified API discovery, dependency mapping, deployment visibility, and operational metadata in one catalog</span><span class="tech">Backstage</span></div>
-      <div class="box gate"><b>Portal permissions</b><span class="role">policy-as-code: every portal action passes through a permission policy that returns an allow, deny, or conditional decision, and the plugin that owns the resource enforces it; Role-Based Access Control (RBAC) governs portal actions</span><span class="tech">Backstage permission framework</span></div>
+      <div class="box"><b>Catalog + discovery</b><span class="role">the single source of truth for the client's API estate: unified API discovery, dependency mapping, deployment visibility, and operational metadata in one catalog</span></div>
+      <div class="box gate"><b>Portal permissions</b><span class="role">policy-as-code: every portal action passes through a permission policy that returns an allow, deny, or conditional decision, and the plugin that owns the resource enforces it; Role-Based Access Control (RBAC) governs portal actions</span><span class="tech">Permission policy framework</span></div>
       <div class="box ext"><b>Okta / GitHub / local identity</b><span class="role">the identity source of record: every portal and publish action executes as an authenticated identity</span></div>
     </div>
   </div>
@@ -166,13 +166,13 @@
 <h2 class="sec">The three layers</h2>
 <div class="layers">
   <div class="layer"><h3>Data layer</h3><p>Airflow DAGs with Spark processing steps ingest from file uploads, API streams, and queue consumers into hybrid OpenSearch indexes (BM25 lexical ranking plus kNN vector search) and versioned datasets. The same pinned dataset versions feed fine-tuning, evals, and agent use cases, so every consumer agrees on what the data was at any point in time.</p></div>
-  <div class="layer"><h3>Product layer</h3><p>A Backstage-based portal is the single source of truth for the API estate: unified discovery, dependency mapping, deployment visibility, operational metadata. The authoring surfaces (pipeline conversion, Monaco self-authoring, DSPy agent composition) sit beside the evaluation and governance planes that decide what ships, so the paved road from authored to published is the only road.</p></div>
+  <div class="layer"><h3>Product layer</h3><p>The portal is the single source of truth for the API estate: unified discovery, dependency mapping, deployment visibility, operational metadata. The authoring surfaces (pipeline conversion, Monaco self-authoring, DSPy agent composition) sit beside the evaluation and governance planes that decide what ships, so the paved road from authored to published is the only road.</p></div>
   <div class="layer"><h3>Deployment layer</h3><p>Multi-tenancy runs on the silo model: client-specific plugins, per-client deployments, and domain isolation give each enterprise client a dedicated tenant boundary, with Okta, GitHub, or local identity integration and entity-level permissions operating inside it. Rollouts phase per client as their compliance posture requires, and governance configuration deploys with the artifact, not as an afterthought. The SOC-aligned audit trail is the evidence it held: MLflow traces, OpenSearch structured logs, OpenTelemetry instrumentation.</p></div>
 </div>
 
 <h2 class="sec">Stack</h2>
 <div class="chips">
-  <span class="chip">Python</span><span class="chip">TypeScript</span><span class="chip">Backstage</span><span class="chip">React</span>
+  <span class="chip">Python</span><span class="chip">TypeScript</span><span class="chip">React</span>
   <span class="chip">FastAPI</span><span class="chip">MCP</span><span class="chip">DSPy</span><span class="chip">MLflow</span>
   <span class="chip">EvalPlus</span><span class="chip">Airflow</span><span class="chip">Spark</span><span class="chip">OpenSearch</span>
   <span class="chip">OpenTelemetry</span><span class="chip">Okta</span><span class="chip">Docker</span><span class="chip">AWS</span>

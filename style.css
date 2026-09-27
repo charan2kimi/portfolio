@@ -14,7 +14,7 @@
   --ext-bg: #f2f5f8;
   --code-bg: #eef2f6;
   --devx: #2563eb;
-  --secureexec: #7c3aed;
+  --agentexec: #7c3aed;
   --finetuning: #0f766e;
   --sentry: #b45309;
   --shadow: 0 1px 3px rgba(16, 24, 40, 0.08);
@@ -35,7 +35,7 @@
     --ext-bg: #131a23;
     --code-bg: #1c2530;
     --devx: #5b93f5;
-    --secureexec: #a78bfa;
+    --agentexec: #a78bfa;
     --finetuning: #34b3a8;
     --sentry: #e5a458;
     --shadow: none;
@@ -208,15 +208,15 @@ h2.sec { font-size: 20px; margin: 38px 0 6px; letter-spacing: -0.2px; }
 .card p { font-size: 13.5px; color: var(--muted); }
 .card .go { display: block; margin-top: 10px; font-size: 13.5px; font-weight: 600; color: var(--accent); }
 .card.devx { border-top-color: var(--devx); }
-.card.secureexec { border-top-color: var(--secureexec); }
+.card.agentexec { border-top-color: var(--agentexec); }
 .card.finetuning { border-top-color: var(--finetuning); }
 .card.sentry { border-top-color: var(--sentry); }
 
 /* Accent variants applied per page via body class */
 body.p-devx .accentbar, body.p-devx .plane { border-left-color: var(--devx); }
 body.p-devx .accentbar { background: var(--devx); }
-body.p-secureexec .accentbar, body.p-secureexec .plane { border-left-color: var(--secureexec); }
-body.p-secureexec .accentbar { background: var(--secureexec); }
+body.p-agentexec .accentbar, body.p-agentexec .plane { border-left-color: var(--agentexec); }
+body.p-agentexec .accentbar { background: var(--agentexec); }
 body.p-finetuning .accentbar, body.p-finetuning .plane { border-left-color: var(--finetuning); }
 body.p-finetuning .accentbar { background: var(--finetuning); }
 body.p-sentry .accentbar, body.p-sentry .plane { border-left-color: var(--sentry); }
@@ -229,7 +229,7 @@ body.p-sentry .accentbar { background: var(--sentry); }
   border: 1px solid var(--line); border-radius: 8px; padding: 12px; background: var(--bg);
 }
 .eco .tier.devx { border-left: 4px solid var(--devx); }
-.eco .tier.secureexec { border-left: 4px solid var(--secureexec); }
+.eco .tier.agentexec { border-left: 4px solid var(--agentexec); }
 .eco .tier.finetuning { border-left: 4px solid var(--finetuning); }
 .eco .tier.sentry { border-left: 4px solid var(--sentry); }
 .eco .tier.spine { border-left: 4px solid var(--line-strong); }

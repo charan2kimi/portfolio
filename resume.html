@@ -3,28 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="color-scheme" content="light">
     <title>Resume | Charan Lingamgunta</title>
-    <meta name="description" content="Resume of Charan Lingamgunta, Staff Software Engineer: AI/ML platforms, LLM infrastructure, distributed systems.">
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%232563eb'/><text x='50' y='68' font-size='52' text-anchor='middle' fill='white' font-family='Arial'>CL</text></svg>">
     <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        body {
-            font-family: Arial, Helvetica, sans-serif;
-            font-size: 10.5pt;
-            line-height: 1.28;
-            color: #111;
-            background: #fff;
-            max-width: 8.5in;
-            margin: 0 auto;
-            padding: 0.5in 0.65in;
-        }
-
         .sitenav {
             display: flex;
             flex-wrap: wrap;
@@ -34,11 +14,26 @@
             margin-bottom: 14px;
             border-bottom: 1px solid #ccc;
         }
-
         .sitenav a {
             color: #2563eb;
             text-decoration: none;
             font-weight: bold;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 10pt;
+            line-height: 1.2;
+            color: #111;
+            max-width: 8.5in;
+            margin: 0 auto;
+            padding: 0.5in 0.6in;
         }
 
         h1 {
@@ -50,10 +45,13 @@
 
         .headline {
             text-align: center;
-            font-size: 10.5pt;
+            font-size: 9.8pt;
             font-weight: bold;
             text-transform: uppercase;
             margin-bottom: 4px;
+        }
+        .headline.tagline {
+            font-weight: normal;
         }
 
         .contact {
@@ -73,21 +71,21 @@
             text-transform: uppercase;
             border-bottom: 1px solid #000;
             padding-bottom: 2px;
-            margin-top: 9px;
-            margin-bottom: 5px;
+            margin-top: 6px;
+            margin-bottom: 3px;
         }
 
         p {
-            margin-bottom: 6px;
+            margin-bottom: 4px;
         }
 
         ul {
             margin-left: 18px;
-            margin-bottom: 5px;
+            margin-bottom: 4px;
         }
 
         li {
-            margin-bottom: 2px;
+            margin-bottom: 1px;
         }
 
         .skills-list {
@@ -107,15 +105,26 @@
             align-items: baseline;
             gap: 12px;
         }
+        .edu-row > div:last-child { white-space: nowrap; padding-left: 12px; }
 
         .job-header {
-            margin-top: 7px;
+            margin-top: 6px;
             margin-bottom: 3px;
         }
 
         .platform-header {
-            margin-top: 7px;
-            margin-bottom: 3px;
+            margin-top: 6px;
+            margin-bottom: 2px;
+        }
+        .job-header .title {
+            font-weight: normal;
+            font-style: italic;
+        }
+        .job-header .date {
+            font-weight: normal;
+        }
+        .job-header {
+            margin-left: 14px;
         }
 
         .title {
@@ -128,20 +137,51 @@
         }
 
         .role-scope {
-            margin-bottom: 6px;
+            margin-bottom: 4px;
+        }
+        .platform-header .employer {
+            font-weight: normal;
+            white-space: nowrap;
+        }
+        .earlier {
+            margin-top: 3px;
+            margin-bottom: 1px;
+        }
+        .platform-header,
+        .company-header,
+        .job-header {
+            break-after: avoid;
+        }
+
+        .company-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            gap: 12px;
+            font-size: 10.8pt;
+            margin-top: 5px;
+            margin-bottom: 1px;
+        }
+        .company-header .name {
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+        .company-header .place {
+            text-transform: none;
+        }
+        .company-header .place {
+            font-size: 10.2pt;
+            font-weight: normal;
         }
 
         @media print {
+            .sitenav { display: none; }
             body {
                 padding: 0;
             }
 
-            .sitenav {
-                display: none;
-            }
-
             @page {
-                margin: 0.5in 0.65in;
+                margin: 0.4in 0.55in;
             }
         }
     </style>
@@ -158,7 +198,7 @@
 
     <h1>Charan Lingamgunta</h1>
     <div class="headline">Staff Software Engineer</div>
-    <div class="headline">AI/ML Platform | LLM Infrastructure | Distributed Systems</div>
+    <div class="headline tagline">AI Platform | Agent Infrastructure | Document AI | LLM Evaluation | Distributed Systems</div>
     <div class="contact">
         Boston, MA | charan.lingamgunta@gmail.com |
         <a href="https://linkedin.com/in/charan-lingamgunta">linkedin.com/in/charan-lingamgunta</a> |
@@ -167,94 +207,129 @@
 
     <h2>Professional Summary</h2>
     <p>
-        Staff Software Engineer with 15 years building AI/ML platforms and high-scale distributed systems for regulated healthcare, financial services, and government clients. Architected the agent execution, LLM fine-tuning, and developer platforms behind a commercial enterprise AI suite: 20+ production fine-tuned models, 2,500+ governed agent tools, and 200+ engineers served, on a gateway foundation processing 10B+ transactions daily.
+        Staff Software Engineer with 15 years in backend and distributed systems for regulated healthcare, financial services, and public-sector customers, the last 5 in applied AI. Architect of SecureGPT, building the infrastructure its AI products ship on, the agent harness, document AI pipeline, model gateway, guardrails, evaluation, and model serving, and taking each from architecture to production in customers' own environments. Technical lead for 12 engineers across four AI teams. Earlier, built an enterprise API gateway carrying 10B+ transactions a day.
     </p>
 
     <h2>Core Skills</h2>
     <ul class="skills-list">
-        <li><strong>AI &amp; ML Platforms:</strong> LLM Fine-Tuning (PEFT, LoRA), Evaluation Pipelines (MLflow GenAI eval, LLM-as-Judge), LLM Observability &amp; Tracing (MLflow, OpenTelemetry), Model Serving (vLLM), Agent Harness &amp; Platforms, RAG (hybrid BM25 + kNN, RRF), MCP, DSPy, Guardrails, Hugging Face, PyTorch, CUDA, Ray</li>
-        <li><strong>Platform &amp; Distributed Systems:</strong> Distributed Systems, Event-Driven Architecture, Pub/Sub &amp; Messaging (JMS, AMQP, Kafka), API Gateways, Developer Platforms, Multi-Tenant Systems, High-Availability Design</li>
-        <li><strong>Cloud &amp; Infrastructure:</strong> AWS (EC2, S3, RDS, ECS, Lambda, CloudWatch), GCP, Docker, Terraform, OpenSearch, Redis, Airflow, Spark, SkyPilot, Jenkins, GitHub Actions</li>
+        <li><strong>Agents &amp; Document AI:</strong> Agent Infrastructure (harness, runtime, tool use, MCP), Sandboxed Code Execution, Document AI &amp; Extraction (OCR, table layout, vision-language), Hybrid RAG (BM25 + kNN, RRF), Evals &amp; Quality Gates (LLM-as-Judge, golden datasets, A/B), Safety Guardrails &amp; PII De-identification, AI Gateway &amp; Model Routing (LiteLLM), Prompt Optimization (DSPy)</li>
+        <li><strong>LLM Serving &amp; Training:</strong> vLLM inference (multi-GPU tensor/expert parallel, speculative decoding), Fine-Tuning (PEFT, LoRA), MLflow (GenAI eval, tracing, observability), OpenTelemetry, PyTorch, CUDA, Ray, Hugging Face</li>
+        <li><strong>Distributed Systems:</strong> Event-Driven Architecture, Streaming APIs (SSE), Pub/Sub &amp; Messaging (JMS, AMQP, Kafka), API Gateways, Multi-Tenant Systems, Reliability &amp; High-Availability Design</li>
+        <li><strong>Cloud &amp; Tooling:</strong> AWS (EC2, S3, RDS, ECS, Lambda, Bedrock), GCP, Docker, OpenSearch, Redis, Airflow, SkyPilot, GitHub Actions</li>
         <li><strong>Languages:</strong> Python, Java, TypeScript, JavaScript, C#</li>
-        <li><strong>Frameworks &amp; Developer Tooling:</strong> Backstage, React, Node.js, FastAPI, Django</li>
-        <li><strong>Security &amp; Compliance:</strong> Sandboxed Code Execution, PII Detection &amp; Redaction, Safety Guardrails, OAuth 2.0, SAML, LDAP, HSM, HIPAA, HITRUST, PCI-DSS, SOC 2, FIPS 140-2</li>
+        <li><strong>Frameworks &amp; Runtimes:</strong> FastAPI, Django, React, Node.js</li>
+        <li><strong>Identity, Security &amp; Compliance:</strong> OAuth 2.0, SAML, LDAP, HSM, FIPS 140-2; HIPAA, HITRUST, PCI-DSS, SOC 2</li>
     </ul>
 
     <h2>Professional Experience</h2>
 
-    <div class="job-header">
-        <div class="title">Staff Software Engineer | Forum Systems | Needham, MA</div>
+    <div class="company-header">
+        <div class="name">Forum Systems (Quantum Gears)<span class="place">, Needham, MA</span></div>
+    </div>
+    <div class="job-header" style="margin-top: 2px; margin-bottom: 1px;">
+        <div class="title">Staff Software Engineer</div>
         <div class="date">Jan 2022 - Present</div>
     </div>
-    <p class="role-scope">
-        Promoted to staff-level ownership across LLM platform, agent execution, and developer platform initiatives, shaping shared architecture, evaluation and security standards, and ADR practices across teams.
-    </p>
+    <div class="job-header" style="margin-top: 0; margin-bottom: 1px;">
+        <div class="title">Senior Software Engineer</div>
+        <div class="date">Sep 2016 - Dec 2021</div>
+    </div>
+    <div class="job-header" style="margin-top: 0; margin-bottom: 1px;">
+        <div class="title">Software Engineer</div>
+        <div class="date">Jun 2014 - Aug 2016</div>
+    </div>
+    <div class="company-header">
+        <div class="name">Mimecast<span class="place">, Watertown, MA</span></div>
+    </div>
+    <div class="job-header" style="margin-top: 2px; margin-bottom: 1px;">
+        <div class="title">Software Developer Intern</div>
+        <div class="date">Jun 2013 - Aug 2013</div>
+    </div>
+    <div class="company-header">
+        <div class="name">AppLabs (CSC)<span class="place">, Hyderabad, India</span></div>
+    </div>
+    <div class="job-header" style="margin-top: 2px; margin-bottom: 1px;">
+        <div class="title">Associate Software Engineer</div>
+        <div class="date">Dec 2009 - Jun 2012</div>
+    </div>
+
+    <h2>Projects</h2>
 
     <div class="platform-header">
-        <div class="title">AI SecureExec, Agent and Tool Execution Platform</div>
-        <div class="date">Feb 2023 - Present</div>
+        <div class="title">SecureGPT, Document AI and Agent Harness<span class="employer">, Forum Systems (Quantum Gears)</span></div>
+        <div class="date">Jan 2022 - Present</div>
     </div>
     <ul>
-        <li>Built the enterprise agent harness (DSPy) behind a commercial AI platform: analyst and data science teams run 10,000+ governed agent invocations daily through ReAct and CodeAct workflows, each agent bound to its own model, with results streamed over SSE or dispatched to background workers.</li>
-        <li>Designed per-tenant sandboxed execution for user-authored agent code: an AST-gated interpreter enforcing import allowlists, secrets scanning, and runtime limits at parse time and on every execution step, so semi-trusted analyst code reaches a live multi-tenant runtime without a platform engineer reviewing every change.</li>
-        <li>Published an MCP-compatible tool registry with discovery, scoped per-identity authorization, and SOC-aligned audit, giving teams a governed path to reuse 2,500+ enterprise tools in agent workflows; both DevX and SecureExec expose MCP servers.</li>
-        <li>Designed agentic RAG pipelines over OpenSearch hybrid retrieval (BM25 + kNN with reciprocal rank fusion and query decomposition), with judge-in-the-loop correction that catches both hallucinations and false gaps; self-hosted embeddings keep data in-tenant and eliminate per-token cost at 50,000+ documents ingested monthly.</li>
-        <li>Built the offline evaluation gate on MLflow: a versioned golden dataset over the regulated corpus, scored by trace-aware LLM-as-judge graders that assess tool calls and reasoning steps, not just final answers, run in CI so prompt, model, or tool changes that regress faithfulness are blocked before release.</li>
-        <li>Instrumented MLflow tracing across agent execution, tool usage, and policy decisions, with OpenSearch structured logging, giving teams replayable traces to debug and measure agent behavior in production.</li>
-        <li>Implemented a multi-provider LLM gateway (LiteLLM) routing per-tenant traffic across self-hosted, fine-tuned, and Bedrock-hosted models with per-tenant access policies, context-window-aware token budgeting, and per-call cost emission, letting regulated tenants pin to private models for data residency.</li>
-        <li>Integrated agent inputs and outputs with the enterprise PII detection and redaction control plane, enforcing content-moderation and safety guardrails in HIPAA-regulated deployments.</li>
+        <li>Built the chat and document chat inference service SecureGPT launched with, private and public models behind guardrails and de-identification, streaming responses to users.</li>
+        <li>Lead the SecureGPT AI stack. Set the architecture, evaluation, and security standards that 12 engineers across the inference, agents, document ingestion and RAG, and deployment teams build to, and chair architecture reviews.</li>
+        <li>Built the agent harness behind 10,000+ governed agent runs a day for analyst and data science teams at a top-3 health insurer. It orchestrates nested sub-agents as tools, streams results live or runs durably in the background with checkpoint and resume, and traces every run in MLflow.</li>
+        <li>Designed the document ingestion engine. Uploads take one of three extraction paths, fast text, OCR with table layout, or vision-language (VL) deep transformation, then land in OpenSearch with self-hosted embeddings and PII and PHI tags.</li>
+        <li>Raised fact-level extraction accuracy from 63.3% to 97% on a 685-fact ground truth, for the pipeline reading 50,000 insurance and Medicare documents a month, by reworking the extraction pipeline and benchmarking frontier against open-weight VL models to pick the production model.</li>
+        <li>Established agent evaluation with golden datasets as regression gates before release, and online evals that sample production runs, score them with an LLM judge, and flag failures for review.</li>
+        <li>Shipped the guardrails, five concurrent checks on every prompt (legal-risk screening, acceptable-use, content moderation, intent classification, and safety) plus prompt-injection detection, extensible with a firm's own guardrail prompts. Paired them with de-identification that replaces names, addresses, and health identifiers before a public model call and restores them in the answer.</li>
+        <li>Engineered the sandbox the harness runs agents and tools in, a restricted Python interpreter that enforces AST validation, import allowlists, and resource limits from sandbox testing through production, with optional per-agent microVM isolation.</li>
+        <li>Extended the agent harness with an MCP server and tool registry that scopes discovery to the namespaces a query needs, with per-identity authorization and SOC 2-aligned audit logging.</li>
+        <li>Architected the agentic RAG pipeline on OpenSearch hybrid retrieval, BM25 + kNN with reciprocal rank fusion and query decomposition.</li>
+        <li>Cut peak memory on document load by 70% by instrumenting the embedding pipeline and calibrating chunk sizes to its memory profile, which unblocked parallel document processing.</li>
+        <li>Own the model serving layer, bringing up open-weight models on vLLM across AWS, GCP, and RunPod GPU hosts and frontier models through Bedrock, all behind one OpenAI-compatible LiteLLM gateway with access policies.</li>
+        <li>Built the model evaluation harness that scores each frontier and open-weight release on agentic reasoning, code generation, PDF extraction, guardrail, and de-identification tasks against internal ground truth, and benchmarks open-weight models for throughput across GPU topologies. Promising models are A/B tested and phased into production.</li>
     </ul>
 
     <div class="platform-header">
-        <div class="title">DevX Fine-Tuning, LLM Fine-Tuning and Deployment Platform</div>
+        <div class="title">LLM Fine-Tuning<span class="employer">, Forum Systems (Quantum Gears)</span></div>
         <div class="date">Jan 2023 - Jun 2025</div>
     </div>
     <ul>
-        <li>Developed the LLM fine-tuning platform behind 20+ production models at enterprise clients: one workflow to onboard Hugging Face models, launch PEFT/LoRA jobs, and compare runs in MLflow, with LLM-as-judge plus human review gating every release.</li>
-        <li>Lowered training cost with SkyPilot spot orchestration and Ray distributed training across AWS and GCP; served models on GPU-backed vLLM with OpenSearch monitoring of training and production behavior.</li>
-        <li>Built versioned dataset pipelines for Excel and JSON corpora with repeatable preprocessing and reproducible train/validation/test splits.</li>
+        <li>Built the fine-tuning platform behind 20+ production models at enterprise firms, with PEFT/LoRA training on versioned datasets and reproducible splits, checkpointed training with pause and resume tracked in MLflow, and release after testing and approval.</li>
+        <li>Reduced training cost with SkyPilot spot provisioning and Ray distributed training across AWS and GCP; served the models on vLLM behind the gateway.</li>
     </ul>
 
     <div class="platform-header">
-        <div class="title">DevX, Developer Experience Platform</div>
+        <div class="title">DevX, API Catalog, Agent &amp; Tool Authoring<span class="employer">, Forum Systems (Quantum Gears)</span></div>
         <div class="date">Jan 2022 - Present</div>
     </div>
     <ul>
-        <li>Led architecture for the developer platform serving Fortune 500 healthcare and financial services clients, unifying API discovery, deployment visibility, dependency mapping, and operational metadata; the largest single deployment serves 200+ engineers and 1,000+ APIs.</li>
-        <li>Converted 1,000+ API specifications into 2,500+ governed, MCP-compatible tools through an OpenAPI-to-tool pipeline, removing the review-queue bottleneck for agent tool publication.</li>
-        <li>Built the safe self-authoring path that drove enterprise adoption: analysts write custom tools in a Monaco-based editor against an allowed Python library set, validate them in sandbox tests, and publish only on passing, gated by entity-level RBAC and tenant isolation.</li>
-        <li>Delivered multi-tenant capabilities for regulated deployments (client-specific plugins, Okta/GitHub/local identity integration, entity-level permissions) and mentored 5 engineers, 2 of whom were promoted to senior roles.</li>
+        <li>Lead architecture for the multi-tenant platform where a firm catalogs its APIs, authors agents and tools, and turns API operations into MCP-served agent tools through its SDK, published into the SecureGPT harness. The largest deployment covers 200+ engineers and 1,000+ APIs exposed as 2,500+ agent tools at one Fortune 500 firm.</li>
+        <li>Built the self-serve authoring flow analysts and data scientists use to write, sandbox-test, and publish their own agents and tools.</li>
+        <li>Enforced role-based access control (RBAC) on published agents and tools and attribute-based access control (ABAC) on data access and egress at runtime.</li>
     </ul>
 
-    <div class="job-header">
-        <div class="title">Senior Software Engineer, Distributed Systems | Forum Systems | Needham, MA</div>
+    <div class="platform-header">
+        <div class="title">Forum Sentry, Enterprise API Gateway and Builder<span class="employer">, Forum Systems (Quantum Gears)</span></div>
         <div class="date">Jun 2014 - Dec 2021</div>
     </div>
-    <div class="platform-header">
-        <div class="title">Forum Sentry, Enterprise API Gateway and Builder</div>
-    </div>
     <ul>
-        <li>Architected the 4-stage bidirectional streaming pipeline carrying 10B+ transactions daily across HTTP, SOAP, JMS, AMQP, SFTP, and S3, with zero-copy passthrough, automatic retry/failover, and 7 timing checkpoints for stage-level latency attribution.</li>
-        <li>Cut backend load 40-70% with multi-tier API response caching (memory, disk, Redis; RFC 7234-compliant) with request coalescing for cache-stampede protection, configured through no-code cache policies.</li>
-        <li>Designed the no-code API builder: 60+ processors for security, data transformation, routing, and validation, sandboxed inline JavaScript (on the JVM) and Python scripting, and 20+ partner, cloud, and database integrations, cutting client onboarding from weeks to days.</li>
-        <li>Engineered active-passive failover with 9 load-balancing strategies, sub-minute recovery, and 99.99% uptime targets for financial and government workloads, on FIPS 140-2, HSM-backed cryptography.</li>
-        <li>Implemented the authentication subsystem supporting 11 enterprise identity methods, with auth-side caching and connection pooling that eliminated 90%+ of directory roundtrips.</li>
+        <li>Architected the 4-stage bidirectional streaming pipeline carrying 10B+ transactions daily in aggregate across customer deployments, over HTTP, SOAP, JMS, AMQP, SFTP, and S3, with zero-copy passthrough, automatic retry and failover, and stage-level latency attribution.</li>
+        <li>Cut backend load 40-70% with multi-tier API response caching (memory, disk, Redis) and request coalescing for cache-stampede protection, configured through no-code cache policies.</li>
+        <li>Designed the no-code API builder with dozens of processors for security, data transformation, routing, and validation, sandboxed inline JavaScript, and other integrations that cut new-API onboarding from weeks to hours.</li>
+        <li>Engineered active-passive failover with sub-minute recovery and 99.99% uptime for financial and government workloads on FIPS 140-2, HSM-backed deployments.</li>
+        <li>Built the authentication subsystem supporting 11 authentication methods; its caching and connection pooling eliminated 90%+ of directory roundtrips.</li>
     </ul>
 
-    <h2>Earlier Experience</h2>
+    <div class="platform-header">
+        <div class="title">MimeDrive<span class="employer">, Mimecast</span></div>
+        <div class="date">Jun 2013 - Aug 2013</div>
+    </div>
     <ul>
-        <li><strong>Software Developer Intern, Mimecast, Watertown, MA (2013):</strong> enterprise email encryption application in C#/WPF with PowerShell test automation.</li>
-        <li><strong>Associate Software Engineer, AppLabs (CSC), Hyderabad, India (2009 - 2012):</strong> reporting and notification modules for an e-learning platform serving millions of users.</li>
+        <li>Enterprise email encryption application in C#/WPF with PowerShell test automation.</li>
+    </ul>
+
+    <div class="platform-header">
+        <div class="title">Blackboard Learn<span class="employer">, AppLabs (CSC)</span></div>
+        <div class="date">Dec 2009 - Jun 2012</div>
+    </div>
+    <ul>
+        <li>Reporting and notification modules for an e-learning platform serving millions of users.</li>
     </ul>
 
     <h2>Education</h2>
     <div class="edu-row">
-        <div><strong>Master of Science in Computer Information Systems</strong>, Northeastern University</div>
-        <div>Boston, MA</div>
+        <div><strong>Master of Science in Computer Information Systems</strong>, Northeastern University, Boston, MA</div>
+        <div>2012 - 2014</div>
     </div>
     <div class="edu-row" style="margin-top: 4px;">
-        <div><strong>Bachelor of Engineering in Computer Science</strong>, JNT University</div>
-        <div>India</div>
+        <div><strong>Bachelor of Engineering in Computer Science</strong>, JNTU, India</div>
+        <div>2005 - 2009</div>
     </div>
 </body>
 </html>
