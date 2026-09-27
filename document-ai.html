@@ -3,12 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SecureGPT Architecture | Charan Lingamgunta</title>
-<meta name="description" content="SecureGPT, document AI and agent harness: three-path document extraction into hybrid retrieval, guardrails on every prompt and de-identification before public model calls, a sandboxed agent runtime with an MCP tool registry, model serving on vLLM and Bedrock behind one gateway, and evaluation gates on agents and model releases.">
+<title>Document AI and Agent Platform Architecture | Charan Lingamgunta</title>
+<meta name="description" content="Enterprise document AI and agent platform: three-path document extraction into hybrid retrieval, guardrails on every prompt and de-identification before public model calls, a sandboxed agent runtime with an MCP tool registry, model serving on vLLM and Bedrock behind one gateway, and evaluation gates on agents and model releases.">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%232563eb'/><text x='50' y='68' font-size='52' text-anchor='middle' fill='white' font-family='Arial'>CL</text></svg>">
 <link rel="stylesheet" href="style.css">
 </head>
-<body class="p-securegpt">
+<body class="p-docai">
 <div class="wrap">
 
 <nav class="nav">
@@ -18,7 +18,7 @@
     <button class="copybtn" type="button" onclick="navigator.clipboard.writeText('charan.lingamgunta@gmail.com');this.textContent='Copied';this.classList.add('done');setTimeout(()=>{this.textContent='Email';this.classList.remove('done');},1200)">Email</button>
   </span>
   <a href="index.html">Overview</a>
-  <a class="active" href="securegpt.html">SecureGPT</a>
+  <a class="active" href="document-ai.html">Document AI</a>
   <a href="devx.html">DevX</a>
   <a href="finetuning.html">Fine-Tuning</a>
   <a href="sentry.html">Sentry</a>
@@ -27,10 +27,10 @@
 
 <header class="pagehead">
   <span class="accentbar"></span>
-  <h1>SecureGPT, Document AI and Agent Harness</h1>
+  <h1>Enterprise Document AI and Agent Platform</h1>
   <p class="scope">
     <strong>Container-level view: the infrastructure an enterprise AI product ships on.</strong>
-    SecureGPT began as a private chat and document chat service, private and public models behind guardrails, with
+    The platform began as a private chat and document chat service, private and public models behind guardrails, with
     de-identification whenever a public model is involved, streaming answers to users. It grew into the document AI pipeline and the agent harness
     that analyst and data science teams run their work through today. Deployed in customers' own environments
     for regulated healthcare, financial services, and public sector work. I am the architect and technical lead;
@@ -54,7 +54,7 @@
 </p>
 
 <div class="arch">
-  <div class="dtitle">SecureGPT, container-level, request and document paths</div>
+  <div class="dtitle">Document AI and agent platform, container-level, request and document paths</div>
   <div class="dsub">VL = vision-language. OCR = optical character recognition. Read top to bottom; connectors name the contract between planes.</div>
 
   <div class="plane">

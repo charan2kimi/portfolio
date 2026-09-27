@@ -15,7 +15,7 @@
   --code-bg: #eef2f6;
   --devx: #2563eb;
   --agentexec: #7c3aed;
-  --securegpt: #7c3aed;
+  --docai: #7c3aed;
   --finetuning: #0f766e;
   --sentry: #b91c1c;
   --shadow: 0 1px 3px rgba(16, 24, 40, 0.08);
@@ -37,7 +37,7 @@
     --code-bg: #1c2530;
     --devx: #5b93f5;
     --agentexec: #a78bfa;
-    --securegpt: #a78bfa;
+    --docai: #a78bfa;
     --finetuning: #34b3a8;
     --sentry: #f87171;
     --shadow: none;
@@ -212,7 +212,7 @@ h2.sec { font-size: 20px; margin: 38px 0 6px; letter-spacing: -0.2px; }
 .card .go { display: block; margin-top: auto; padding-top: 10px; font-size: 13.5px; font-weight: 600; color: var(--accent); }
 .card.devx { border-top-color: var(--devx); }
 .card.agentexec { border-top-color: var(--agentexec); }
-.card.securegpt { border-top-color: var(--securegpt); }
+.card.docai { border-top-color: var(--docai); }
 .card.finetuning { border-top-color: var(--finetuning); }
 .card.sentry { border-top-color: var(--sentry); }
 
@@ -221,8 +221,8 @@ body.p-devx .accentbar, body.p-devx .plane { border-left-color: var(--devx); }
 body.p-devx .accentbar { background: var(--devx); }
 body.p-agentexec .accentbar, body.p-agentexec .plane { border-left-color: var(--agentexec); }
 body.p-agentexec .accentbar { background: var(--agentexec); }
-body.p-securegpt .accentbar, body.p-securegpt .plane { border-left-color: var(--securegpt); }
-body.p-securegpt .accentbar { background: var(--securegpt); }
+body.p-docai .accentbar, body.p-docai .plane { border-left-color: var(--docai); }
+body.p-docai .accentbar { background: var(--docai); }
 body.p-finetuning .accentbar, body.p-finetuning .plane { border-left-color: var(--finetuning); }
 body.p-finetuning .accentbar { background: var(--finetuning); }
 body.p-sentry .accentbar, body.p-sentry .plane { border-left-color: var(--sentry); }
@@ -236,7 +236,7 @@ body.p-sentry .accentbar { background: var(--sentry); }
 }
 .eco .tier.devx { border-left: 4px solid var(--devx); }
 .eco .tier.agentexec { border-left: 4px solid var(--agentexec); }
-.eco .tier.securegpt { border-left: 4px solid var(--securegpt); }
+.eco .tier.docai { border-left: 4px solid var(--docai); }
 .eco .tier.finetuning { border-left: 4px solid var(--finetuning); }
 .eco .tier.sentry { border-left: 4px solid var(--sentry); }
 .eco .tier.spine { border-left: 4px solid var(--line-strong); }

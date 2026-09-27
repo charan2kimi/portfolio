@@ -18,7 +18,7 @@
     <button class="copybtn" type="button" onclick="navigator.clipboard.writeText('charan.lingamgunta@gmail.com');this.textContent='Copied';this.classList.add('done');setTimeout(()=>{this.textContent='Email';this.classList.remove('done');},1200)">Email</button>
   </span>
   <a href="index.html">Overview</a>
-  <a href="securegpt.html">SecureGPT</a>
+  <a href="document-ai.html">Document AI</a>
   <a href="devx.html">DevX</a>
   <a href="finetuning.html">Fine-Tuning</a>
   <a class="active" href="sentry.html">Sentry</a>
@@ -172,7 +172,7 @@
 
 <h2 class="sec">What the AI stack inherited</h2>
 <div class="layers">
-  <div class="layer"><h3>Policy pipeline &#8594; tool governance</h3><p>A policy pipeline composed without code, versioned and audited, is the direct ancestor of the governance layer on agent tools in SecureGPT and DevX: scoped authorization and audit attached to the artifact instead of hand-written per integration.</p></div>
+  <div class="layer"><h3>Policy pipeline &#8594; tool governance</h3><p>A policy pipeline composed without code, versioned and audited, is the direct ancestor of the governance layer on agent tools in the document AI and agent platform and in DevX: scoped authorization and audit attached to the artifact instead of hand-written per integration.</p></div>
   <div class="layer"><h3>Identity brokering &#8594; tenant identity</h3><p>An authentication subsystem with 11 methods behind one interface, plus caching and connection pooling that eliminated 90%+ of directory roundtrips, taught the pattern the AI stack uses for Okta, GitHub, and local identity: resolve identity once at the edge, scope everything behind it.</p></div>
   <div class="layer"><h3>Stage checkpoints &#8594; agent tracing</h3><p>The timing checkpoints that attribute gateway latency stage by stage became span-level trace attribution in the agent harness: same discipline, new substrate. When an agent run is slow, the trace names the hop that spent the time, exactly as the pipeline did for a transaction.</p></div>
 </div>
@@ -187,7 +187,7 @@
 
 <footer class="foot">
   <div>Charan Lingamgunta &#183; Staff Software Engineer &#183; Boston, MA &#183; <a href="mailto:charan.lingamgunta@gmail.com">charan.lingamgunta@gmail.com</a> &#183; <a href="https://linkedin.com/in/charan-lingamgunta">LinkedIn</a> &#183; <a href="resume.pdf">Resume</a></div>
-  <div>Back to <a href="index.html">the overview</a>, or continue to <a href="securegpt.html">SecureGPT</a> where these instincts live now.</div>
+  <div>Back to <a href="index.html">the overview</a>, or continue to <a href="document-ai.html">the document AI and agent platform</a> where these instincts live now.</div>
   <div class="terms">
     HSM = Hardware Security Module &#183; FIPS = Federal Information Processing Standards &#183;
     SIEM = Security Information and Event Management &#183; OIDC = OpenID Connect &#183; SAML = Security Assertion Markup Language

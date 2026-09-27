@@ -18,7 +18,7 @@
     <button class="copybtn" type="button" onclick="navigator.clipboard.writeText('charan.lingamgunta@gmail.com');this.textContent='Copied';this.classList.add('done');setTimeout(()=>{this.textContent='Email';this.classList.remove('done');},1200)">Email</button>
   </span>
   <a href="index.html">Overview</a>
-  <a href="securegpt.html">SecureGPT</a>
+  <a href="document-ai.html">Document AI</a>
   <a href="devx.html">DevX</a>
   <a class="active" href="finetuning.html">Fine-Tuning</a>
   <a href="sentry.html">Sentry</a>
@@ -34,7 +34,7 @@
     (PEFT) with Low-Rank Adaptation (LoRA) on versioned datasets with reproducible splits, checkpointed training
     with pause and resume tracked in MLflow, and release after testing and approval. Training cost came down with
     SkyPilot spot provisioning and Ray distributed training across AWS and GCP; approved models serve on vLLM behind
-    the <a href="securegpt.html">SecureGPT</a> gateway. Jan 2023 to Jun 2025.
+    the <a href="document-ai.html">platform's</a> gateway. Jan 2023 to Jun 2025.
   </p>
 </header>
 
@@ -106,7 +106,7 @@
     <div class="pboxes">
       <div class="box"><b>Model registry</b><span class="role">approved runs register as numbered model versions carrying dataset, run, and approval lineage</span><span class="tech">MLflow</span></div>
       <div class="box"><b>GPU serving</b><span class="role">production inference on vLLM, with serving parameters tuned per deployment</span><span class="tech">vLLM</span></div>
-      <div class="box"><b>Gateway registration</b><span class="role">served models become private models in the SecureGPT gateway, pinnable per user group under the same access policies as every other model</span><span class="tech">LiteLLM</span></div>
+      <div class="box"><b>Gateway registration</b><span class="role">served models become private models in the platform's gateway, pinnable per user group under the same access policies as every other model</span><span class="tech">LiteLLM</span></div>
     </div>
   </div>
 
@@ -128,7 +128,7 @@
   <li><span><b>Pause.</b> <span class="via">An operator halts the run at its latest checkpoint. Nothing is lost; the run becomes an inspectable artifact instead of a moving target.</span></span></li>
   <li><span><b>Resume or stop.</b> <span class="via">Continue from the latest checkpoint or kill the run on the evidence. Spot preemption triggers the same machinery: SkyPilot provisions replacement capacity and the job reloads its latest checkpoint.</span></span></li>
   <li><span><b>The gate decides.</b> <span class="via">MLflow compares surviving candidates across runs; the model is tested against the held-out split and approved by name. Nothing deploys on metrics alone.</span></span></li>
-  <li><span><b>Registry, serving, gateway.</b> <span class="via">Approved versions register with their lineage, then serve on vLLM and register into the SecureGPT gateway as private models.</span></span></li>
+  <li><span><b>Registry, serving, gateway.</b> <span class="via">Approved versions register with their lineage, then serve on vLLM and register into the platform's gateway as private models.</span></span></li>
 </ol>
 
 <h2 class="sec">Key decisions</h2>
@@ -163,7 +163,7 @@
 <div class="layers">
   <div class="layer"><h3>Data layer</h3><p>Versioned datasets are the spine. Scheduled pipelines turn uploads, API streams, and queue-fed corpora into numbered dataset versions with reproducible train / validation / test splits. The same versions serve training, release tests, and agent use cases, so every consumer scores against identical data by version ID.</p></div>
   <div class="layer"><h3>Product layer</h3><p>One workflow from Hugging Face base model onboarding through training launch, live metrics, pause and resume, comparison in MLflow, and the release gate. A domain team produces a governed model without owning GPUs or orchestration; pausing a run and resuming it are product operations, not infrastructure surgery.</p></div>
-  <div class="layer"><h3>Deployment layer</h3><p>Approved models serve on vLLM, with serving parameters tuned per deployment, and register into the SecureGPT gateway as private models under the same access policies as every other model.</p></div>
+  <div class="layer"><h3>Deployment layer</h3><p>Approved models serve on vLLM, with serving parameters tuned per deployment, and register into the platform's gateway as private models under the same access policies as every other model.</p></div>
 </div>
 
 <h2 class="sec">Stack</h2>

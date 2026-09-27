@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Charan Lingamgunta | AI Platform Architecture</title>
-<meta name="description" content="Charan Lingamgunta, Staff Software Engineer. Architecture deep dives of SecureGPT, document AI and an agent harness; DevX, an API catalog with agent and tool authoring; an LLM fine-tuning platform; and the Forum Sentry API gateway.">
+<meta name="description" content="Charan Lingamgunta, Staff Software Engineer. Architecture deep dives of an enterprise document AI and agent platform; DevX, an API catalog with agent and tool authoring; an LLM fine-tuning platform; and the Forum Sentry API gateway.">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%232563eb'/><text x='50' y='68' font-size='52' text-anchor='middle' fill='white' font-family='Arial'>CL</text></svg>">
 <link rel="stylesheet" href="style.css">
 </head>
@@ -18,7 +18,7 @@
     <button class="copybtn" type="button" onclick="navigator.clipboard.writeText('charan.lingamgunta@gmail.com');this.textContent='Copied';this.classList.add('done');setTimeout(()=>{this.textContent='Email';this.classList.remove('done');},1200)">Email</button>
   </span>
   <a class="active" href="index.html">Overview</a>
-  <a href="securegpt.html">SecureGPT</a>
+  <a href="document-ai.html">Document AI</a>
   <a href="devx.html">DevX</a>
   <a href="finetuning.html">Fine-Tuning</a>
   <a href="sentry.html">Sentry</a>
@@ -30,17 +30,17 @@
   <p class="tagline">
     <strong>Staff Software Engineer in Boston. AI platform, agent infrastructure, document AI, LLM evaluation and
     serving, distributed systems.</strong> Fifteen years of backend and distributed systems for regulated healthcare,
-    financial services, and public sector customers, the last five in applied AI as architect of SecureGPT since 2022, an
+    financial services, and public sector customers, the last five in applied AI as architect of an enterprise document AI and agent platform since 2022, an
     agent harness and document AI pipeline in production at a top 3 health insurer. Before that, an enterprise API gateway carrying
     10B+ transactions a day in aggregate across customer deployments.
   </p>
 </header>
 
 <section class="cards">
-  <a class="card securegpt" href="securegpt.html">
+  <a class="card docai" href="document-ai.html">
     <span class="num">10,000+</span>
     <span class="numlabel">governed agent runs a day</span>
-    <h3>SecureGPT</h3>
+    <h3>Document AI and Agent Platform</h3>
     <p>Document AI and agent harness: three-path document extraction into hybrid retrieval, guardrails on every prompt and de-identification before public model calls, a sandboxed agent runtime with an MCP tool registry, model serving, and evaluation gates.</p>
     <span class="go">Architecture &#8594;</span>
   </a>
@@ -48,7 +48,7 @@
     <span class="num">200+</span>
     <span class="numlabel">engineers building agents and tools at one Fortune 500 firm</span>
     <h3>DevX</h3>
-    <p>API catalog, self-serve authoring, and an SDK. Agents and tools are either authored by people or derived from API operations by the SDK, 1,000+ APIs as 2,500+ tools. All of it publishes into the SecureGPT harness under role-based and attribute-based access control.</p>
+    <p>API catalog, self-serve authoring, and an SDK. Agents and tools are either authored by people or derived from API operations by the SDK, 1,000+ APIs as 2,500+ tools. All of it publishes into the platform's agent harness under role-based and attribute-based access control.</p>
     <span class="go">Architecture &#8594;</span>
   </a>
   <a class="card finetuning" href="finetuning.html">
@@ -69,9 +69,9 @@
 
 <h2 class="sec" id="ecosystem">How the pieces fit</h2>
 <p class="secnote">
-  System-context view. SecureGPT is the product: the document AI pipeline, the agent harness, the safety layer,
+  System-context view. The document AI and agent platform is the product: the document AI pipeline, the agent harness, the safety layer,
   and the serving layer, deployed in the customer's own environment. DevX is where a firm catalogs its APIs and
-  authors the agents and tools SecureGPT runs. The fine-tuning platform supplies private models to the serving
+  authors the agents and tools the platform runs. The fine-tuning platform supplies private models to the serving
   layer. Forum Sentry sits outside the loop, seven years of gateway engineering the AI stack inherits its instincts from.
 </p>
 
@@ -93,8 +93,8 @@
 
     <div class="conn"><em>enters:</em> a firm's users, documents, APIs, identity, and the models its policy allows</div>
 
-    <div class="tier securegpt">
-      <div class="tlabel"><a href="securegpt.html">SecureGPT</a><small>the product: document AI and agent harness, 10,000+ governed agent runs a day at a top 3 health insurer, 50,000 documents a month</small></div>
+    <div class="tier docai">
+      <div class="tlabel"><a href="document-ai.html">Document AI and Agent Platform</a><small>the product: document AI and agent harness, 10,000+ governed agent runs a day at a top 3 health insurer, 50,000 documents a month</small></div>
       <div class="pboxes">
         <div class="box gate"><b>Guardrails + de-identification</b><span class="role">five concurrent checks plus prompt-injection detection; names, addresses, and health identifiers replaced before a public model call at answer time</span></div>
         <div class="box"><b>Document AI</b><span class="role">three extraction paths, self-hosted embeddings, PII and PHI tags, hybrid retrieval in OpenSearch</span></div>
@@ -104,7 +104,7 @@
       </div>
     </div>
 
-    <div class="conn"><em>runs what DevX publishes:</em> agents and tools arrive over MCP, discoverable only to the identities entitled to them; the same authoring is available inside SecureGPT</div>
+    <div class="conn"><em>runs what DevX publishes:</em> agents and tools arrive over MCP, discoverable only to the identities entitled to them; the same authoring is available inside the platform</div>
 
     <div class="tier devx">
       <div class="tlabel"><a href="devx.html">DevX</a><small>API catalog, agent and tool authoring</small></div>
@@ -152,7 +152,7 @@
 <p class="prose lead">
   Each page goes one level deeper than the resume. There is a diagram with named enforcement points, a numbered
   flow, and the key architecture decisions written the way I make them, the call, the alternative considered, and
-  the consequence. Start with <a href="securegpt.html">SecureGPT</a> for the product,
+  the consequence. Start with <a href="document-ai.html">the document AI and agent platform</a> for the product,
   <a href="devx.html">DevX</a> for how its agents and tools are authored, <a href="finetuning.html">Fine-Tuning</a>
   for the private models, and <a href="sentry.html">Forum Sentry</a> for the gateway years.
 </p>
